@@ -75,7 +75,6 @@ public class DataBase {
             System.err.println("Fail on create table [Ranking] (E: "+ex.getMessage()+")");
             return false;
         }
-        System.out.println("DataBase created");
         return true;
     }
     /**

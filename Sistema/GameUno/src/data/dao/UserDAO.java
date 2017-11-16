@@ -7,6 +7,7 @@ package data.dao;
 
 import model.user.User;
 import data.DataBase;
+import exception.DaoException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,8 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import util.AppLog;
 /**
  *
@@ -31,8 +30,8 @@ User Table
                 + "	password TEXT NOT NULL,\n"
                 + "	first_contact INT, \n"
 */
-public class UserDAO implements DAO{
-    private final Connection conn;
+public class UserDAO implements DaoInterface{
+    private Connection conn;
     /**
      * User DAO, classe responsável por manipular o User no banco de dados
      */
@@ -41,7 +40,7 @@ public class UserDAO implements DAO{
     }
     
     @Override
-    public void INSERT(Object myDAO) {
+    public void INSERT(Object myDAO) throws DaoException{
         User myUser = (User) myDAO;
         String sql = "INSERT INTO User (login,date_birth,name,src_profile,password) VALUES(?,?,?,?,?)";
         try {
@@ -54,6 +53,8 @@ public class UserDAO implements DAO{
             preparedStatement.setString(5,myUser.getPassword());
             
             preparedStatement.execute();
+            preparedStatement.close();
+            conn.close();
         } catch (SQLException ex) {
      
             switch(ex.getErrorCode()){
@@ -67,12 +68,33 @@ public class UserDAO implements DAO{
     }
 
     @Override
-    public void UPDATE(Object myDAO) {
- 
+    public void UPDATE(Object myDAO)throws DaoException {
+        User myUser = (User) myDAO;
+        String sql = "UPDATE User SET login = ?,date_birth = ? ,name = ? ,src_profile = ? ,password = ?, first_contact = ? WHERE login = ?;";
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            
+            preparedStatement.setString(1,myUser.getLogin());
+            preparedStatement.setDate(2,(java.sql.Date) myUser.getDateBirth());
+            preparedStatement.setString(3,myUser.getName());
+            preparedStatement.setString(4,myUser.getSrcProfile());
+            preparedStatement.setString(5,myUser.getPassword());
+            
+            preparedStatement.setInt(6,myUser.getFirstContact());
+            
+            preparedStatement.setString(7,myUser.getLogin());
+            
+            preparedStatement.execute();
+            preparedStatement.close();
+            conn.close();
+        } catch (SQLException ex) {
+            AppLog.error("Erro desconhecido ao atualizar em [User]"+" E: ("+ex.getMessage()+")");
+            throw new DaoException("Erro ao atualizar Usuário");
+        }
     }
 
     @Override
-    public void DELETE(Object myDAO) {
+    public void DELETE(Object myDAO)throws DaoException {
     
     }
     /**
@@ -92,7 +114,6 @@ public class UserDAO implements DAO{
                 actualUser.setDateBirth(rs.getDate("date_birth"));
                 actualUser.setSrcProfile(rs.getString("src_profile"));
                 actualUser.setFirstContact(rs.getInt("first_contact"));
-               
                 outList.add(actualUser);
             }
         } catch (SQLException ex) {
@@ -105,7 +126,7 @@ public class UserDAO implements DAO{
      * @param userReceive Ususario que deseja verificar login
      * @return 
      */
-    public User doLogin(User userReceive) {
+    public User doLogin(User userReceive) throws DaoException{
         String sql= "SELECT * FROM User WHERE login = ? AND password = ?";
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -114,19 +135,25 @@ public class UserDAO implements DAO{
             preparedStatement.setString(2, userReceive.getPassword());
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                User userS = new User();
-                userS.setName(rs.getString("name"));
-                userS.setFirstContact(rs.getInt("first_contact"));
-                
-                return userS;
+                userReceive.setName(rs.getString("name"));
+                userReceive.setFirstContact(rs.getInt("first_contact"));
+                userReceive.setDateBirth(rs.getDate("date_birth"));
+                userReceive.setSrcProfile(rs.getString("src_profile"));
+                preparedStatement.close();
+                conn.close();
+                return userReceive;
                 
             }
-            return null;
+            preparedStatement.close();
+            conn.close();
+            throw new DaoException("Usuário ou senha incorreto.");
             
         } catch (SQLException ex) {
             AppLog.error("Erro ao realizar login de usuário "+userReceive.getLogin()+" E:"+ex.getMessage());
         }
         return null;
     }
+
+   
     
 }

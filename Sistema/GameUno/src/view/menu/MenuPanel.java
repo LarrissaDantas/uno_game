@@ -6,31 +6,38 @@
 package view.menu;
 
 import javax.swing.JOptionPane;
+import util.NotificationTime;
+import view.util.Notification;
+import view.notification.NotificationType;
+import view.notification.NotificationEventsInterface;
+import view.notification.NotificationManagerInterface;
+
 
 /**
  *
  * @author sergi
  */
-public class MenuPanel extends javax.swing.JPanel {
+public class MenuPanel extends javax.swing.JPanel implements NotificationManagerInterface{
     private MenuPanelController controller;
+
     /**
      * Creates new form MenuPanel
      */
     private MenuPanel() {
         initComponents();
-        tutoPanel.setVisible(false);
-
+        
+        
     }
-
+    public void setUserInfos(String login,String name,String srcIcon){
+        lbName.setText("Nome: "+name);
+        lbLogin.setText("Login: "+login);
+        userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user/"+srcIcon)));
+    }
+    
     public MenuPanel(MenuPanelController myController) {
         this();
         this.controller = myController;
-        
-    }
-    public void showTutorial(boolean  show){
-        tutoPanel.setVisible(show);
-    }
-    
+    }   
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,163 +48,237 @@ public class MenuPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tutoPanel = new javax.swing.JPanel();
-        btnExitTutorial = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        button_panel = new javax.swing.JPanel();
+        panelUp = new javax.swing.JPanel();
+        btnAbout = new javax.swing.JButton();
+        notificationPanel = new view.notification.NotificationPanel();
+        btnTutorial = new javax.swing.JButton();
+        panelMid = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        userPanel = new javax.swing.JPanel();
+        userIcon = new javax.swing.JLabel();
+        lbName = new javax.swing.JLabel();
+        lbLogin = new javax.swing.JLabel();
         btnStart = new javax.swing.JButton();
         btnContinue = new javax.swing.JButton();
         btnRanking = new javax.swing.JButton();
         btnOut = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         iconBack = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 255, 255));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
-        tutoPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelUp.setOpaque(false);
+        panelUp.setPreferredSize(new java.awt.Dimension(779, 80));
+        panelUp.setRequestFocusEnabled(false);
 
-        btnExitTutorial.setText("X");
-        btnExitTutorial.addActionListener(new java.awt.event.ActionListener() {
+        btnAbout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconabout.png"))); // NOI18N
+        btnAbout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitTutorialActionPerformed(evt);
+                btnAboutActionPerformed(evt);
             }
         });
-        tutoPanel.add(btnExitTutorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, -1, -1));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/ninja_64.png"))); // NOI18N
+        notificationPanel.setLayout(new javax.swing.BoxLayout(notificationPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel3.setText("Cococococococ");
+        btnTutorial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconTutorial.png"))); // NOI18N
+        btnTutorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTutorialActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+        javax.swing.GroupLayout panelUpLayout = new javax.swing.GroupLayout(panelUp);
+        panelUp.setLayout(panelUpLayout);
+        panelUpLayout.setHorizontalGroup(
+            panelUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelUpLayout.createSequentialGroup()
+                .addContainerGap(1109, Short.MAX_VALUE)
+                .addComponent(btnTutorial)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAbout)
                 .addContainerGap())
+            .addGroup(panelUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelUpLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(notificationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1099, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(104, Short.MAX_VALUE)))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(0, 8, Short.MAX_VALUE)))
-                .addGap(237, 237, 237))
+        panelUpLayout.setVerticalGroup(
+            panelUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelUpLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(panelUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnTutorial)
+                    .addComponent(btnAbout))
+                .addContainerGap(35, Short.MAX_VALUE))
+            .addGroup(panelUpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelUpLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(notificationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
-        tutoPanel.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 34, -1, 320));
+        add(panelUp);
 
-        add(tutoPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 480, 440));
+        panelMid.setOpaque(false);
+        panelMid.setLayout(new javax.swing.BoxLayout(panelMid, javax.swing.BoxLayout.X_AXIS));
 
-        button_panel.setOpaque(false);
+        jPanel2.setOpaque(false);
+
+        userPanel.setOpaque(false);
+        userPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user/user_1.png"))); // NOI18N
+        userPanel.add(userIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 70, 90));
+
+        lbName.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        lbName.setForeground(new java.awt.Color(255, 255, 255));
+        lbName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbName.setText("Nome:");
+        userPanel.add(lbName, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 360, -1));
+
+        lbLogin.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        lbLogin.setForeground(new java.awt.Color(255, 255, 255));
+        lbLogin.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbLogin.setText("Login:");
+        userPanel.add(lbLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 360, -1));
 
         btnStart.setBackground(new java.awt.Color(122, 213, 75));
         btnStart.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        btnStart.setForeground(new java.awt.Color(51, 51, 51));
+        btnStart.setForeground(new java.awt.Color(255, 255, 255));
         btnStart.setText("Iniciar jogo");
         btnStart.setBorderPainted(false);
+        userPanel.add(btnStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, 360, 60));
 
         btnContinue.setBackground(new java.awt.Color(247, 217, 37));
         btnContinue.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        btnContinue.setForeground(new java.awt.Color(51, 51, 51));
+        btnContinue.setForeground(new java.awt.Color(255, 255, 255));
         btnContinue.setText("Continuar jogo");
+        btnContinue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnContinueActionPerformed(evt);
+            }
+        });
+        userPanel.add(btnContinue, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 420, 360, 60));
 
         btnRanking.setBackground(new java.awt.Color(0, 149, 203));
         btnRanking.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        btnRanking.setForeground(new java.awt.Color(51, 51, 51));
+        btnRanking.setForeground(new java.awt.Color(255, 255, 255));
         btnRanking.setText("Visualizar ranking");
+        btnRanking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRankingActionPerformed(evt);
+            }
+        });
+        userPanel.add(btnRanking, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, 360, 60));
 
         btnOut.setBackground(new java.awt.Color(235, 26, 34));
         btnOut.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        btnOut.setForeground(new java.awt.Color(51, 51, 51));
-        btnOut.setText("Sair do jogo");
+        btnOut.setForeground(new java.awt.Color(255, 255, 255));
+        btnOut.setText("Logout");
         btnOut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOutActionPerformed(evt);
             }
         });
+        userPanel.add(btnOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 560, 360, 60));
 
-        javax.swing.GroupLayout button_panelLayout = new javax.swing.GroupLayout(button_panel);
-        button_panel.setLayout(button_panelLayout);
-        button_panelLayout.setHorizontalGroup(
-            button_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, button_panelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(button_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/400x600_background.png"))); // NOI18N
+        userPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 410, 600));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(userPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        button_panelLayout.setVerticalGroup(
-            button_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(button_panelLayout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnStart)
-                .addGap(21, 21, 21)
-                .addComponent(btnContinue)
-                .addGap(21, 21, 21)
-                .addComponent(btnRanking)
-                .addGap(21, 21, 21)
-                .addComponent(btnOut)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(userPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(227, Short.MAX_VALUE))
         );
 
-        add(button_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 220, 200));
+        panelMid.add(jPanel2);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/iconabout.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 530, 40, 30));
+        jPanel3.setOpaque(false);
 
         iconBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Logo_Uno_600x500.png"))); // NOI18N
-        add(iconBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, 590, -1));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(iconBack)
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(iconBack)
+                .addContainerGap(339, Short.MAX_VALUE))
+        );
+
+        panelMid.add(jPanel3);
+
+        add(panelMid);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAboutActionPerformed
+     // TODO add your handling code here:
+        controller.showAbout();
+    }//GEN-LAST:event_btnAboutActionPerformed
+
     private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
-    
-        controller.exitApp();
+
+         controller.logout();
     }//GEN-LAST:event_btnOutActionPerformed
 
-    private void btnExitTutorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitTutorialActionPerformed
+    private void btnTutorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTutorialActionPerformed
         // TODO add your handling code here:
-        controller.exitTutorial();
-    }//GEN-LAST:event_btnExitTutorialActionPerformed
+        controller.showTutorial();
+    }//GEN-LAST:event_btnTutorialActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     // TODO add your handling code here:
-     controller.showAbout();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinueActionPerformed
+        // TODO add your handling code here:
+        controller.onBtnContinueClicked();
+    }//GEN-LAST:event_btnContinueActionPerformed
 
-    public boolean confirmExit(){
-        return JOptionPane.showConfirmDialog(this, "Deseja sair?","Sair", JOptionPane.OK_CANCEL_OPTION)==2?true:false;
+    private void btnRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankingActionPerformed
+        // TODO add your handling code here:
+        controller.onBtnRankingClicked();
+    }//GEN-LAST:event_btnRankingActionPerformed
+
+    public boolean showConfirmDialog(String message, String title){
+        return JOptionPane.showConfirmDialog(this, message,title, JOptionPane.OK_CANCEL_OPTION)==2;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbout;
     private javax.swing.JButton btnContinue;
-    private javax.swing.JButton btnExitTutorial;
     private javax.swing.JButton btnOut;
     private javax.swing.JButton btnRanking;
     private javax.swing.JButton btnStart;
-    private javax.swing.JPanel button_panel;
+    private javax.swing.JButton btnTutorial;
     private javax.swing.JLabel iconBack;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel tutoPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lbLogin;
+    private javax.swing.JLabel lbName;
+    private view.notification.NotificationPanel notificationPanel;
+    private javax.swing.JPanel panelMid;
+    private javax.swing.JPanel panelUp;
+    private javax.swing.JLabel userIcon;
+    private javax.swing.JPanel userPanel;
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -205,14 +286,24 @@ public class MenuPanel extends javax.swing.JPanel {
      * @param b 
      */
     public void enableComponents(boolean b) {
-        btnContinue.setEnabled(b);
-        btnOut.setEnabled(b);
-        btnStart.setEnabled(b);
-        btnRanking.setEnabled(b);
-        iconBack.setEnabled(b);
+       btnContinue.setEnabled(b);
+       btnOut.setEnabled(b);
+       btnStart.setEnabled(b);
+       btnRanking.setEnabled(b);
+       iconBack.setEnabled(b);
     }
 
-    void showAbout(boolean b) {
-        //panelAbout.set
+    @Override
+    public void notify(NotificationType notificationType,String message,NotificationTime time) {
+        
+        Notification notification = new Notification(notificationType, message);
+        notificationPanel.showNotification(notification,new NotificationEventsInterface() {
+            @Override
+            public void onCloseNotification() {
+                notificationPanel.clearPanel();
+            }
+        },time);
+        
+       
     }
 }

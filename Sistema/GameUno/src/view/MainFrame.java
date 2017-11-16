@@ -5,8 +5,16 @@
  */
 package view;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Label;
+import java.awt.Point;
+import java.awt.Rectangle;
 import javax.swing.JPanel;
 import kernel.task.AppTask;
+import util.NotificationTime;
+import view.notification.NotificationType;
+import view.notification.NotificationManagerInterface;
 
 /**
  * Frame principal da aplicação
@@ -19,6 +27,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents(); 
+        setExtendedState(MAXIMIZED_BOTH);
     }
     /**
      * Settar controller do MainFrame
@@ -39,18 +48,9 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 800, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-        );
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pack();
         setLocationRelativeTo(null);
@@ -93,4 +93,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    public void shootNotification(NotificationType notificationType,String message,NotificationTime time) {
+        try{
+            
+            NotificationManagerInterface actualView = (NotificationManagerInterface)this.getContentPane();
+            actualView.notify(notificationType,message,time);
+        }catch(Exception ex){
+            
+        }
+        }
+
+ 
 }

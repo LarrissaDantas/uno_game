@@ -5,9 +5,17 @@
  */
 package view.menu;
 
-import model.game.GameModel; 
+
+import model.user.UserModel;
+import util.AppUtil;
+import util.NotificationTime;
 import view.MainFrameController;
 import view.ViewController;
+import view.about.AboutPanelController;
+import view.login.LoginPanelController;
+import view.notification.NotificationType;
+import view.tutorial.TutorialPanelController;
+
 
 /**
  *
@@ -20,36 +28,48 @@ public class MenuPanelController implements ViewController{
     public void startView() {
         myView = new MenuPanel(this);
         MainFrameController.setView(myView);
+        //Pegar dados do ususario loggado
+        String login = UserModel.USER_LOGGED.getLogin();
+        String name = UserModel.USER_LOGGED.getName();
+        String srcUser = UserModel.USER_LOGGED.getSrcProfile();
+        
+        myView.setUserInfos(login, name, srcUser);
         //Caso o usuario logado esteja usando o sistema pela primeira vez
-        if(GameModel.USER_LOGGED.getFirstContact()==1){
-           myView.showTutorial(true);
-           myView.enableComponents(false);
+        if(UserModel.USER_LOGGED.getFirstContact()==AppUtil.USER_FIRST_CONTACT_VALUE){
+            new TutorialPanelController().startView();
         }
     }
+  
+    
+    
     /**
-     * Reponde ao evento de fechar o tutorial
+     * Logout do jogo
      */
-    void exitTutorial() {
-           myView.showTutorial(false);
-           myView.enableComponents(true);
-            //TODO: Alterar valor do User e salvar
-    }
-    /**
-     * Sair da aplicação
-     */
-    void exitApp() {
-        if(myView.confirmExit()){
+    public void logout() {
+        if(myView.showConfirmDialog("Deseja realizar logout?","Logout")){
         } else {
-            System.exit(0);
+            new LoginPanelController().startView();
+            UserModel.USER_LOGGED = null;
         }
+    }    
+    public void showAbout(){
+        new AboutPanelController().startView();
+    }
+
+    @Override
+    public void returnPage() {
         
     }
 
-    void showAbout() {
-        myView.showAbout(true);
+    public void showTutorial() {
+        new TutorialPanelController().startView();
     }
-   
-    
-    
-    
+
+    void onBtnContinueClicked() {
+        MainFrameController.shootNotification(NotificationType.INFO, "Você ainda não possui jogo salvo, tente iniciar um novo.",NotificationTime.MEDIUM);
+    }
+
+    void onBtnRankingClicked() {
+        MainFrameController.shootNotification(NotificationType.WARNING, "O ranking está indisponível.",NotificationTime.SHORT);
+    }
 }

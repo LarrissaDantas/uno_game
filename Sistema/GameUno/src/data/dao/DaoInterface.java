@@ -5,24 +5,26 @@
  */
 package data.dao;
 
+import exception.DaoException;
+
 /**
  *
  * @author sergi
  */
-public interface DAO {
+public interface DaoInterface {
     /**
      * Inserir DAO na base de dados
      * @param myDAO 
      */
-    public void INSERT(Object myDAO);
+    public void INSERT(Object myDAO)throws DaoException;
     /**
      * Atualizar DAO na base de dados
      * @param myDAO 
      */
-    public void UPDATE(Object myDAO);
+    public void UPDATE(Object myDAO)throws DaoException;
     /**
      * Remover DAO da base de dados
      * @param myDAO 
      */
-    public void DELETE(Object myDAO);
+    public void DELETE(Object myDAO)throws DaoException;
 }

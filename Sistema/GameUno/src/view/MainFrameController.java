@@ -8,9 +8,11 @@ package view;
 import javax.swing.JPanel;
 import kernel.task.StartTask;
 import kernel.task.TestTask;
+import util.NotificationTime;
 import view.load.LoadInterface;
 import view.load.LoadPanel;
-import view.login.LoginController;
+import view.login.LoginPanelController;
+import view.notification.NotificationType;
 
 /**
  * Frame principal
@@ -18,6 +20,21 @@ import view.login.LoginController;
  */
 public class MainFrameController {
     private static MainFrame mainFrame;
+
+    public static void shootNotification(NotificationType notificationType,String message,NotificationTime time) {
+        mainFrame.shootNotification(notificationType,message,time);
+    }
+
+    public static void enableMainFame(boolean b) {
+        mainFrame.setEnabled(b);
+    }
+
+    public static void exitApp() {
+        System.out.println("Saiu");
+        System.exit(0);
+    }
+
+ 
     public MainFrameController(){
         mainFrame = new MainFrame();
     }
@@ -36,19 +53,15 @@ public class MainFrameController {
             public void onLoadComplete() {
                 new Thread(() -> {
                     //Linha para testes
-                        new TestTask().executeTasks();
+                        //new TestTask().executeTasks();
                 }).start();
                 MainFrameController.setView(new LoadPanel(new LoadInterface() {
                     @Override
                     public void onLoadComplete() {
-                        LoginController loginController = new LoginController();
+                        LoginPanelController loginController = new LoginPanelController();
                         loginController.startView();
                     }
                 }));
-                
-                //Linha para produção
-                    //LoginController loginController = new LoginController();
-                    //loginController.startView();
             }
         }));
     }

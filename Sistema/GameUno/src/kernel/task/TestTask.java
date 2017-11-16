@@ -5,6 +5,7 @@
  */
 package kernel.task;
 
+import exception.ModelException;
 import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,12 +30,16 @@ public class TestTask implements AppTask{
         //Corpo da task
         User userTest = new User();
         userTest.setLogin("teste");
-        userTest.setPassword("123");
+        userTest.setPassword("12345678");
         userTest.setName("Usuário teste");
-        userTest.setSrcProfile("blabala");
+        userTest.setSrcProfile("user_1.png");
         userTest.setDateBirth(new Date(2132132));
         UserModel model = new UserModel();
-        model.insertUser(userTest);
+        try {
+            model.insertUser(userTest);
+        } catch (ModelException ex) {
+            System.out.println(ex.getMessage());
+        }
         
         AppTaskManager.TASK_VALUE = 1;
         waitMillis(1000);

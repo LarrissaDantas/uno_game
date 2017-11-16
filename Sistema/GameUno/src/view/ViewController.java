@@ -15,5 +15,6 @@ public interface ViewController {
     /**
      * Metodo para iniciar a view da controller 
      */
-   public abstract void startView();
+   public void startView();
+   public void returnPage(); 
 }

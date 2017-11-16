@@ -5,12 +5,10 @@
  */
 package model.game;
 
-import model.user.User;
-
 /**
  * Modelo de jogo
  * @author LelaScarlet
  */
 public class GameModel {
-    public static User USER_LOGGED;
+   
 }
