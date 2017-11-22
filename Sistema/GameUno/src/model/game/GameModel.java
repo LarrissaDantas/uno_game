@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
-import javax.swing.text.html.HTMLDocument;
 import model.card.Card;
 import model.card.CardModel;
 import model.player.Player;
@@ -23,6 +22,7 @@ import model.user.UserModel;
 public class GameModel implements  GameStatusInterface{
     private Game actualGame;
     private GameStatusInterface gameStatusInterface;
+    
     private static GameModel myInstaModel;
     private GameModel(){}
     /**
@@ -31,6 +31,7 @@ public class GameModel implements  GameStatusInterface{
      */
     public void startNewGame(GameMode gameMode){
         actualGame = new Game();
+        
         //Setar o modo de jogo
         actualGame.setGameMode(gameMode);
         
@@ -40,10 +41,11 @@ public class GameModel implements  GameStatusInterface{
         //Gerar a pilha de cartas para o jogo
         CardModel cardModel = new CardModel();
         Stack newStack = cardModel.generateCardStack();
-        //AQUI CHAMA O METODO DE EMBARALHAR A PILHA PASSANDO ELA COMO PARAMETRO 
         
+        //Embaralhar cartas
         shuffleCards(newStack);
         
+        //Atribuir a pilha de cartas gerada ao jogo
         actualGame.setStackCard(newStack);
         
         //Gerar os players da partida
@@ -53,7 +55,7 @@ public class GameModel implements  GameStatusInterface{
         //Distribui as cartas
         shareCards(players);
         
-        
+        //Jogo criado
         gameCreated();
     }
     
@@ -125,11 +127,19 @@ public class GameModel implements  GameStatusInterface{
         }
         return myInstaModel;
     }
-
+    
+    /**
+     * CArregar jogo do usuari, caso exista
+     * @param user
+     * @return 
+     */
     public boolean loadGameSavedFromUser(User user) {
         return false;
     }
-
+    /**
+     * Meotodo para embaralhar as cartas
+     * @param stackCard 
+     */
     private void shuffleCards(Stack<Card> stackCard) {
         ArrayList<Card> listCards = new ArrayList<>();
         while(!stackCard.isEmpty()){
@@ -157,12 +167,16 @@ public class GameModel implements  GameStatusInterface{
     @Override
     public void gameCreated() {
         actualGame.setGameStatus(GameStatus.CREATED);
-        gameStatusInterface.gameCreated();
+        if(gameStatusInterface!=null){
+            gameStatusInterface.gameCreated();    
+        }
     }
 
     @Override
     public void gameStarted() {
         actualGame.setGameStatus(GameStatus.STARTED);
-        gameStatusInterface.gameStarted();
+        if(gameStatusInterface!=null){
+            gameStatusInterface.gameStarted();
+        }
     }
 }
