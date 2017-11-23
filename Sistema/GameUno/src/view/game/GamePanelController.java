@@ -17,12 +17,18 @@ import view.ViewController;
 public class GamePanelController implements ViewController,GameStatusInterface{
     private GamePanel myView;
     private GameModel gameModel = GameModel.myInstance();
+
+    public GamePanelController() {
+        gameModel.setGameStatusInterface(this);
+    }
+    
+    
     
     @Override
     public void startView() {
         myView = new GamePanel(this);
         MainFrameController.setView(myView);
-        gameModel.setGameStatusInterface(this);
+        
     }
 
     @Override
@@ -32,8 +38,7 @@ public class GamePanelController implements ViewController,GameStatusInterface{
 
     @Override
     public void gameCreated() {
-        
-        System.out.println("JOGO CRIADO");
+        myView.setBtnStartGameVisible(true);
     }
 
     @Override

@@ -78,7 +78,7 @@ public class MenuPanelController implements ViewController{
         MainFrameController.shootNotification(NotificationType.WARNING, "O ranking está indisponível.",NotificationTime.SHORT);
     }
 
-    void onBtnStartClicked() {
+    public void onBtnStartClicked() {
         GameMode gameMode = GameMode.SINGLE;
         new Thread(() -> {
             new GameTask(gameMode).executeTasks();
