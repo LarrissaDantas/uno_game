@@ -7,8 +7,7 @@ package view;
 
 import javax.swing.JPanel;
 import kernel.task.StartTask;
-import kernel.task.TestTask;
-import util.NotificationTime;
+import view.notification.NotificationTime;
 import view.load.LoadInterface;
 import view.load.LoadPanel;
 import view.login.LoginPanelController;
@@ -20,7 +19,10 @@ import view.notification.NotificationType;
  */
 public class MainFrameController {
     private static MainFrame mainFrame;
-
+    
+    public static MainFrame getMainFrame(){
+        return mainFrame;
+    }
     public static void shootNotification(NotificationType notificationType,String message,NotificationTime time) {
         mainFrame.shootNotification(notificationType,message,time);
     }
@@ -76,4 +78,12 @@ public class MainFrameController {
         mainFrame.setContentPane(view);
         mainFrame.revalidate();
     }
+
+    public static void startNoContentFrame(){
+         if(mainFrame==null){
+             mainFrame = new MainFrame();
+         }
+         mainFrame.setVisible(true);
+    }
+
 }

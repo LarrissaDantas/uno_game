@@ -6,7 +6,7 @@
 package view.menu;
 
 import javax.swing.JOptionPane;
-import util.NotificationTime;
+import view.notification.NotificationTime;
 import view.util.Notification;
 import view.notification.NotificationType;
 import view.notification.NotificationEventsInterface;
@@ -150,6 +150,11 @@ public class MenuPanel extends javax.swing.JPanel implements NotificationManager
         btnStart.setForeground(new java.awt.Color(255, 255, 255));
         btnStart.setText("Iniciar jogo");
         btnStart.setBorderPainted(false);
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
         userPanel.add(btnStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, 360, 60));
 
         btnContinue.setBackground(new java.awt.Color(247, 217, 37));
@@ -257,6 +262,11 @@ public class MenuPanel extends javax.swing.JPanel implements NotificationManager
         // TODO add your handling code here:
         controller.onBtnRankingClicked();
     }//GEN-LAST:event_btnRankingActionPerformed
+
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        // TODO add your handling code here:
+        controller.onBtnStartClicked();
+    }//GEN-LAST:event_btnStartActionPerformed
 
     public boolean showConfirmDialog(String message, String title){
         return JOptionPane.showConfirmDialog(this, message,title, JOptionPane.OK_CANCEL_OPTION)==2;

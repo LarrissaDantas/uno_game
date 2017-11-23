@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.notification;
-
-import view.notification.NotificationType;
+package model.card;
 
 /**
  *
  * @author sergi
  */
-public interface NotificationManagerInterface {
-    public void notify(NotificationType notificationType,String message,NotificationTime time);
+public enum CardColor {
+    RED,GREEN,BLUE,YELLOW,NEUTRON
 }
