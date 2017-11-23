@@ -349,7 +349,7 @@ public class TutorialPanel extends javax.swing.JPanel {
         jLabel9.setText("Carta +2:");
 
         jLabel10.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/verde/plus_2_verde.png"))); // NOI18N
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/verde/PLUS_TWO.png"))); // NOI18N
         jLabel10.setText("O jogador seguinte apanha duas cartas e passa a sua vez ao jogador o próximo jogador.");
 
         javax.swing.GroupLayout panelStep6Layout = new javax.swing.GroupLayout(panelStep6);
@@ -377,7 +377,7 @@ public class TutorialPanel extends javax.swing.JPanel {
         jLabel11.setText("Carta Inversão:");
 
         jLabel12.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/azul/t_azul.png"))); // NOI18N
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/azul/REVERSES.png"))); // NOI18N
         jLabel12.setText("O sentido de jogo inverte-se. Se o sentido do jogo está no sentido horário, quando jogada uma carta \"Inverter\", joga-se em sentido anti-horário.");
 
         javax.swing.GroupLayout panelStep7Layout = new javax.swing.GroupLayout(panelStep7);
@@ -405,7 +405,7 @@ public class TutorialPanel extends javax.swing.JPanel {
         jLabel13.setText("Carta Bloqueio:");
 
         jLabel14.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/vermelha/c_vermelho.png"))); // NOI18N
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/vermelha/CANCEL.png"))); // NOI18N
         jLabel14.setText("O jogador seguinte perde a vez.");
 
         javax.swing.GroupLayout panelStep8Layout = new javax.swing.GroupLayout(panelStep8);
@@ -432,7 +432,7 @@ public class TutorialPanel extends javax.swing.JPanel {
         jLabel15.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel15.setText("Carta Coringa:");
 
-        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/4_cor.png"))); // NOI18N
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/joker.png"))); // NOI18N
 
         jTextArea7.setEditable(false);
         jTextArea7.setColumns(20);

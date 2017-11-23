@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.Stack;
 import model.card.Card;
 import model.card.CardModel;
+import model.card.CardType;
 import model.player.Player;
 import model.user.User;
 import model.user.UserModel;
@@ -51,6 +52,7 @@ public class GameModel implements  GameStatusInterface{
         //Gerar os players da partida
         Player[] players = generatePlayers();
         actualGame.setPlayers(players);
+        Player firstPlayer = selectFirstPlayer();
         
         //Distribui as cartas
         shareCards(players);
@@ -81,6 +83,57 @@ public class GameModel implements  GameStatusInterface{
      */
     public void executeCulp(Player p,int cardPositon){
         
+    }
+    /**
+     * Selecionar o jogador que iniciará o jogo
+     * @return 
+     */
+    private Player selectFirstPlayer(){
+        Stack<Card> allCards = (Stack<Card>) actualGame.getStackCard().clone();
+        Random random = new Random();
+        int index = 0;
+        for (Player player : actualGame.getPlayers()) {
+            index = random.nextInt(allCards.size());
+            while(isCardEspecial(allCards.get(index).getCardType())){
+                index = random.nextInt(allCards.size());
+            }
+            player.setDrawnCard(allCards.get(index));
+            allCards.remove(index);
+        }
+        int firstPlayer = checkCards(actualGame.getPlayers());
+        return actualGame.getPlayers()[firstPlayer];
+    }
+    
+    private boolean isCardEspecial(CardType cardType) {
+        switch(cardType){
+            case CANCEL: return true;
+            case REVERSES: return true;
+            case JOKER: return true;
+            case PLUS_TWO: return true;
+            case PLUS_FOUR: return true;
+            default:return false;
+        }
+    }
+    
+    private int checkCards(Player[] players){
+        int cardBigger = -1;
+        int firstPlayer = 0;//Posição do jogador a iniciar a partida
+        for(int i = 0; i<players.length; i++){
+            if(players[i].getDrawnCard().getCardType().getValue()>cardBigger){
+                cardBigger = players[i].getDrawnCard().getCardType().getValue();
+                firstPlayer = i;
+            }
+        }
+        for(int i = 0; i<players.length; i++){
+            for(int j = i+1; j<players.length; j++){
+                //Se doi
+                if(players[i].getDrawnCard().getCardType().getValue()==
+                        players[j].getDrawnCard().getCardType().getValue()){
+                        return 0;//Jogador humano (sempre vai estar na posição 0;
+                }
+            }
+        }
+        return firstPlayer;
     }
     
     /**
@@ -167,7 +220,7 @@ public class GameModel implements  GameStatusInterface{
     @Override
     public void gameCreated() {
         actualGame.setGameStatus(GameStatus.CREATED);
-        if(gameStatusInterface!=null){
+        if(gameStatusInterface != null){
             gameStatusInterface.gameCreated();    
         }
     }
@@ -178,5 +231,9 @@ public class GameModel implements  GameStatusInterface{
         if(gameStatusInterface!=null){
             gameStatusInterface.gameStarted();
         }
+    }
+
+    public Player[] getActualPlayers() {
+            return actualGame.getPlayers();
     }
 }

@@ -15,6 +15,11 @@ import model.user.User;
  */
 public class Player {
     private User user;
+    /**
+     * No inicio do jogo, para definir qual jogador iniciará a partida cada um recebe uma carta.
+     * Ela será guardada em drawnCard
+     */
+    private Card drawnCard;
     private ArrayList<Card> cardsOnHand;
 
     public Player(User user) {
@@ -37,7 +42,14 @@ public class Player {
     public void removeCardOnHand(int index){
         cardsOnHand.remove(index);
     }
+    
+    public Card getDrawnCard() {
+        return drawnCard;
+    }
 
+    public void setDrawnCard(Card drawnCard) {
+        this.drawnCard = drawnCard;
+    }
  
     
     

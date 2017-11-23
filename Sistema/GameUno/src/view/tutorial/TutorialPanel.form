@@ -630,7 +630,7 @@
                       <Font name="Arial Black" size="14" style="1"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/cartas/verde/plus_2_verde.png"/>
+                      <Image iconType="3" name="/images/cartas/verde/PLUS_TWO.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="O jogador seguinte apanha duas cartas e passa a sua vez ao jogador o pr&#xf3;ximo jogador."/>
                   </Properties>
@@ -679,7 +679,7 @@
                       <Font name="Arial Black" size="14" style="1"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/cartas/azul/t_azul.png"/>
+                      <Image iconType="3" name="/images/cartas/azul/REVERSES.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="O sentido de jogo inverte-se. Se o sentido do jogo est&#xe1; no sentido hor&#xe1;rio, quando jogada uma carta &quot;Inverter&quot;, joga-se em sentido anti-hor&#xe1;rio."/>
                   </Properties>
@@ -728,7 +728,7 @@
                       <Font name="Arial Black" size="14" style="1"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/cartas/vermelha/c_vermelho.png"/>
+                      <Image iconType="3" name="/images/cartas/vermelha/CANCEL.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="O jogador seguinte perde a vez."/>
                   </Properties>
@@ -781,7 +781,7 @@
                 <Component class="javax.swing.JLabel" name="jLabel17">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/images/cartas/4_cor.png"/>
+                      <Image iconType="3" name="/images/cartas/joker.png"/>
                     </Property>
                   </Properties>
                 </Component>

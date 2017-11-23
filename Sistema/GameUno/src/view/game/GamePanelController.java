@@ -28,7 +28,7 @@ public class GamePanelController implements ViewController,GameStatusInterface{
     public void startView() {
         myView = new GamePanel(this);
         MainFrameController.setView(myView);
-        
+        gameStarted();
     }
 
     @Override
@@ -38,18 +38,42 @@ public class GamePanelController implements ViewController,GameStatusInterface{
 
     @Override
     public void gameCreated() {
-        myView.setBtnStartGameVisible(true);
+        //Atualizar cartas da mao do jogador
     }
 
     @Override
     public void gameStarted() {
+        System.out.println("Chamado");
+        attUsersCards(true);
         //Thread de temporizador
         new Thread(new Runnable() {
             @Override
             public void run() {
                 //Temporizador
             }
-        }).start();
+        });
     }
-    
+
+    private void attUsersCards(boolean distribute) {
+        //ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/images/400X300_logo_uno.png"));
+        for(int i=0;i< gameModel.getActualPlayers().length ;i++){
+            for (int j = 0; j < gameModel.getActualPlayers()[i].getCardsOnHand().size(); j++) {
+                String scrUserCard = gameModel.getActualPlayers()[i].getCardsOnHand().get(j).getIconSRC();
+                try{
+                    if(i==0){
+                        myView.getUserLabelCard(i)[j].setIcon(new javax.swing.ImageIcon(getClass().getResource("/"+scrUserCard)));                        
+                    }
+                    myView.getUserLabelCard(i)[j].setVisible(true);
+                    if(distribute){
+                        Thread.sleep(200);
+                    }
+                }catch(Exception e){
+                    System.out.println("Erro ao atribuir carta :"+scrUserCard+" E:"+e.getMessage());
+                }
+                
+            }
+            
+        }
+        
+    }
 }

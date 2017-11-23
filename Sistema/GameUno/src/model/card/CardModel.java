@@ -107,10 +107,10 @@ public class CardModel {
         especialCardList = new ArrayList<>();
         //Para as cores
         for (int i = 0; i < especialCardTypes.length; i++) {
-                Card cRed = new Card(especialCardTypes[i],CardColor.RED,"images/cartas/vermelha/"+especialCardTypes.toString()+".png");
-                Card cBlue = new Card(especialCardTypes[i],CardColor.BLUE,"images/cartas/azul/"+especialCardTypes.toString()+".png");
-                Card cYellow = new Card(especialCardTypes[i],CardColor.YELLOW,"images/cartas/amarela/"+especialCardTypes.toString()+".png");
-                Card cGreen = new Card(especialCardTypes[i],CardColor.GREEN,"images/cartas/verde/"+especialCardTypes.toString()+".png");
+                Card cRed = new Card(especialCardTypes[i],CardColor.RED,"images/cartas/vermelha/"+especialCardTypes[i].toString()+".png");
+                Card cBlue = new Card(especialCardTypes[i],CardColor.BLUE,"images/cartas/azul/"+especialCardTypes[i].toString()+".png");
+                Card cYellow = new Card(especialCardTypes[i],CardColor.YELLOW,"images/cartas/amarela/"+especialCardTypes[i].toString()+".png");
+                Card cGreen = new Card(especialCardTypes[i],CardColor.GREEN,"images/cartas/verde/"+especialCardTypes[i].toString()+".png");
                 
                 redCardList.add(cRed);
                 blueCardList.add(cBlue);
