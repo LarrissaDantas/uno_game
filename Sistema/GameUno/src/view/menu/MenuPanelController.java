@@ -6,12 +6,17 @@
 package view.menu;
 
 
+import kernel.task.GameTask;
+import model.game.GameMode;
 import model.user.UserModel;
 import util.AppUtil;
-import util.NotificationTime;
+import view.notification.NotificationTime;
 import view.MainFrameController;
 import view.ViewController;
 import view.about.AboutPanelController;
+import view.game.GamePanelController;
+import view.load.LoadInterface;
+import view.load.LoadPanel;
 import view.login.LoginPanelController;
 import view.notification.NotificationType;
 import view.tutorial.TutorialPanelController;
@@ -71,5 +76,18 @@ public class MenuPanelController implements ViewController{
 
     void onBtnRankingClicked() {
         MainFrameController.shootNotification(NotificationType.WARNING, "O ranking está indisponível.",NotificationTime.SHORT);
+    }
+
+    public void onBtnStartClicked() {
+        GameMode gameMode = GameMode.SINGLE;
+        new Thread(() -> {
+            new GameTask(gameMode).executeTasks();
+        }).start();
+        MainFrameController.setView(new LoadPanel(new LoadInterface() {
+            @Override
+            public void onLoadComplete() {
+                new GamePanelController().startView();
+            }
+        }));
     }
 }

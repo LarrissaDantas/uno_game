@@ -9,7 +9,6 @@ import java.awt.Component;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
-import util.NotificationTime;
 import view.util.Notification;
 
 /**

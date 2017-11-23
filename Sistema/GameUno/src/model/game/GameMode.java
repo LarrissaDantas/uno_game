@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.notification;
-
-import view.notification.NotificationType;
+package model.game;
 
 /**
  *
  * @author sergi
  */
-public interface NotificationManagerInterface {
-    public void notify(NotificationType notificationType,String message,NotificationTime time);
+public enum GameMode {
+    SINGLE,DOUBLE
 }

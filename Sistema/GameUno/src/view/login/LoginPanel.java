@@ -6,10 +6,6 @@
 package view.login;
 
 import javax.swing.JOptionPane;
-import view.notification.NotificationType;
-import view.util.Notification;
-import view.notification.NotificationEventsInterface;
-import view.notification.NotificationManagerInterface;
 
 
 

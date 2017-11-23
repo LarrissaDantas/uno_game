@@ -12,7 +12,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.JPanel;
 import kernel.task.AppTask;
-import util.NotificationTime;
+import view.notification.NotificationTime;
 import view.notification.NotificationType;
 import view.notification.NotificationManagerInterface;
 
