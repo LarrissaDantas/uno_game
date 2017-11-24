@@ -8,6 +8,7 @@ package view.game;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +26,7 @@ public class GamePanel extends javax.swing.JPanel {
         initComponents();
         
     }
+    
     public GamePanel(GamePanelController controller){
         this();
         this.controller = controller;
@@ -69,9 +71,23 @@ public class GamePanel extends javax.swing.JPanel {
             card_u3_c5,
             card_u3_c6
         });
+        //JLabel Cartas (CARTAS DE INICIO)
+        hashMapPlayersCards.put(4, new JLabel[]{
+            card_u0_start,
+            card_u1_start,
+            card_u2_start,
+            card_u3_start
+        });
+        //JLabel Cartas icones de ativo 
+        hashMapPlayersCards.put(5, new JLabel[]{
+            active_u0,
+            active_u1,
+            active_u2,
+            active_u3
+        });
     }
     
-    public JLabel[] getUserLabelCard(int userIndex){
+    public JLabel[] getLabels(int userIndex){
         return hashMapPlayersCards.get(userIndex);
     }
     /**
@@ -146,6 +162,7 @@ public class GamePanel extends javax.swing.JPanel {
         card_u3_c6 = new javax.swing.JLabel();
         card_u3_start = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
+        btnStart = new javax.swing.JButton();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.X_AXIS));
 
@@ -447,15 +464,28 @@ public class GamePanel extends javax.swing.JPanel {
 
         jPanel23.setBackground(new java.awt.Color(204, 255, 255));
 
+        btnStart.setText("Iniciar");
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
         jPanel23Layout.setHorizontalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
+            .addGroup(jPanel23Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnStart)
+                .addContainerGap(323, Short.MAX_VALUE))
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 217, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel23Layout.createSequentialGroup()
+                .addContainerGap(175, Short.MAX_VALUE)
+                .addComponent(btnStart)
+                .addGap(14, 14, 14))
         );
 
         jPanel12.add(jPanel23);
@@ -463,9 +493,13 @@ public class GamePanel extends javax.swing.JPanel {
         add(jPanel12);
     }// </editor-fold>//GEN-END:initComponents
 
-    void setBtnStartGameVisible(boolean b) {
-        
-    }
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        // TODO add your handling code here:
+        controller.onBtnStartClicked();
+        btnStart.setVisible(false);
+    }//GEN-LAST:event_btnStartActionPerformed
+
+   
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -473,6 +507,7 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JLabel active_u1;
     private javax.swing.JLabel active_u2;
     private javax.swing.JLabel active_u3;
+    private javax.swing.JButton btnStart;
     private javax.swing.JLabel card_u0_c0;
     private javax.swing.JLabel card_u0_c1;
     private javax.swing.JLabel card_u0_c2;
@@ -566,5 +601,35 @@ public class GamePanel extends javax.swing.JPanel {
             card_u3_c4.setVisible(false);
             card_u3_c5.setVisible(false);
             card_u3_c6.setVisible(false);
+            
+            card_u0_start.setVisible(false);
+            card_u1_start.setVisible(false);
+            card_u2_start.setVisible(false);
+            card_u3_start.setVisible(false);
+            
+            active_u0.setVisible(false);
+            active_u1.setVisible(false);
+            active_u2.setVisible(false);
+            active_u3.setVisible(false);
+            
+            btnStart.setVisible(false);
     }
+
+    public void showStartButton() {
+        btnStart.setVisible(true);
+    }
+
+    void setStartCardVisible(boolean b) {
+         card_u0_start.setVisible(b);
+            card_u1_start.setVisible(b);
+            card_u2_start.setVisible(b);
+            card_u3_start.setVisible(b);
+    }
+    void setStackPlayedVisible(boolean b){
+        discard_1.setVisible(b);
+        discard_2.setVisible(b);
+        discard_3.setVisible(b);
+    }
+
+    
 }

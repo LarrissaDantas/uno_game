@@ -77,6 +77,7 @@ public class MainFrameController {
         view.setVisible(true);
         mainFrame.setContentPane(view);
         mainFrame.revalidate();
+        System.out.println("Visible for user: "+mainFrame.getContentPane().isShowing());
     }
 
     public static void startNoContentFrame(){

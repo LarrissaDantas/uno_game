@@ -10,11 +10,11 @@ package model.card;
  * @author sergi
  */
 public class Card {
-    private CardType cardType;
+    private CardNormalType cardType;
     private CardColor cardColor;
     private String iconSRC;
     
-    public Card(CardType myType, CardColor myColor,String iconSRC) {
+    public Card(CardNormalType myType, CardColor myColor,String iconSRC) {
         this.cardType = myType;
         this.cardColor = myColor;
         this.iconSRC = iconSRC;
@@ -24,7 +24,7 @@ public class Card {
         return iconSRC;
     }
     
-    public CardType getCardType() {
+    public CardNormalType getCardType() {
         return cardType;
     }
 

@@ -22,6 +22,9 @@ public class Game {
     private GameMode gameMode;
     private GameStatus gameStatus;
     
+    private int gameFirstPlayer;
+    private int actualPlayerIndex;
+    
     public GameMode getGameMode() {
         return gameMode;
     }
@@ -64,6 +67,23 @@ public class Game {
     public void setPlayers(Player[] players) {
         this.players = players;
     }
+
+    public void setFirstPlayer(int selectFirstPlayer) {
+        this.gameFirstPlayer = selectFirstPlayer;
+    }
+    
+    public int getFirstPlayer() {
+         return this.gameFirstPlayer;
+    }
+
+    void setActualPlayer(int playerPosition) {
+        this.actualPlayerIndex = playerPosition;
+    }
+
+    public int getActualPlayerIndex() {
+        return actualPlayerIndex;
+    }
+    
     
     
 }
