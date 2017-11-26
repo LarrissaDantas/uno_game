@@ -17,5 +17,9 @@ public interface GameEventsInterface {
     public void requestLoggedPlayerCulp();
 
     public void culpExecuted();
+
+    public void requestMachinePlayerCulp(int playerIndex);
+    
+   
     
 }

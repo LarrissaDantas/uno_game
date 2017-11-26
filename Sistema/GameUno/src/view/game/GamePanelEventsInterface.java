@@ -5,6 +5,8 @@
  */
 package view.game;
 
+import model.card.Card;
+
 /**
  *
  * @author sergi
@@ -15,4 +17,8 @@ public interface GamePanelEventsInterface {
     public void onStartCardsShared();
     
     public void onCardsShared();
+    
+    public void userLoggedCulp(Card cardToPlay);
+    
+    public void machineCulp();
 }

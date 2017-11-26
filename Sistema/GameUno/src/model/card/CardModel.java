@@ -15,32 +15,32 @@ import java.util.Stack;
  * @author sergi
  */
 public class CardModel {
-    public static ArrayList<CardNormalType>  normalCardTypes = new ArrayList<>();
-    public static ArrayList<CardNormalType> especialCardTypes = new ArrayList<>();
-    public static ArrayList<CardNormalType> jokerCardTypes = new ArrayList<>();
+    public static ArrayList<CardType>  normalCardTypes = new ArrayList<>();
+    public static ArrayList<CardType> especialCardTypes = new ArrayList<>();
+    public static ArrayList<CardType> jokerCardTypes = new ArrayList<>();
     
     private ArrayList<Card> redCardList,greenCardList,blueCardList,yellowCardList,especialCardList;
     
     public CardModel(){
         //ArrayList Normal
-        normalCardTypes.add(CardNormalType.ZERO);
-        normalCardTypes.add(CardNormalType.ONE);
-        normalCardTypes.add(CardNormalType.TWO);
-        normalCardTypes.add(CardNormalType.THREE);
-        normalCardTypes.add(CardNormalType.FOUR);
-        normalCardTypes.add(CardNormalType.FIVE);
-        normalCardTypes.add(CardNormalType.SIX);
-        normalCardTypes.add(CardNormalType.SEVEN);
-        normalCardTypes.add(CardNormalType.EIGHT);
-        normalCardTypes.add(CardNormalType.NINE);
+        normalCardTypes.add(CardType.ZERO);
+        normalCardTypes.add(CardType.ONE);
+        normalCardTypes.add(CardType.TWO);
+        normalCardTypes.add(CardType.THREE);
+        normalCardTypes.add(CardType.FOUR);
+        normalCardTypes.add(CardType.FIVE);
+        normalCardTypes.add(CardType.SIX);
+        normalCardTypes.add(CardType.SEVEN);
+        normalCardTypes.add(CardType.EIGHT);
+        normalCardTypes.add(CardType.NINE);
                     
         //Especial Cartas
-        especialCardTypes.add(CardNormalType.CANCEL);
-        especialCardTypes.add(CardNormalType.PLUS_TWO);
-        especialCardTypes.add(CardNormalType.REVERSES);
+        especialCardTypes.add(CardType.CANCEL);
+        especialCardTypes.add(CardType.PLUS_TWO);
+        especialCardTypes.add(CardType.REVERSES);
         //Joker cards
-        jokerCardTypes.add(CardNormalType.JOKER);
-        jokerCardTypes.add(CardNormalType.PLUS_FOUR);
+        jokerCardTypes.add(CardType.JOKER);
+        jokerCardTypes.add(CardType.PLUS_FOUR);
     }
     public Stack generateCardStack(){
         Stack<Card> newStack = new Stack<>();
@@ -76,11 +76,11 @@ public class CardModel {
         redCardList = new ArrayList<>();
         //Criar cartas normais
         for(int i=0;i<normalCardTypes.size();i++){
-            if(normalCardTypes.get(i)==CardNormalType.ZERO){
-                Card cRed = new Card(CardNormalType.ZERO,CardColor.RED,"images/cartas/vermelha/0.png");
-                Card cBlue = new Card(CardNormalType.ZERO,CardColor.BLUE,"images/cartas/azul/0.png");
-                Card cYellow = new Card(CardNormalType.ZERO,CardColor.YELLOW,"images/cartas/amarela/0.png");
-                Card cGreen = new Card(CardNormalType.ZERO,CardColor.GREEN,"images/cartas/verde/0.png");
+            if(normalCardTypes.get(i)==CardType.ZERO){
+                Card cRed = new Card(CardType.ZERO,CardColor.RED,"images/cartas/vermelha/0.png");
+                Card cBlue = new Card(CardType.ZERO,CardColor.BLUE,"images/cartas/azul/0.png");
+                Card cYellow = new Card(CardType.ZERO,CardColor.YELLOW,"images/cartas/amarela/0.png");
+                Card cGreen = new Card(CardType.ZERO,CardColor.GREEN,"images/cartas/verde/0.png");
                 redCardList.add(cRed);
                 blueCardList.add(cBlue);
                 yellowCardList.add(cYellow);
@@ -128,8 +128,8 @@ public class CardModel {
         
         //Para +4 e Coringa
         for (int i = 0; i < jokerCardTypes.size(); i++) {
-            Card cPlusFour = new Card(CardNormalType.PLUS_FOUR,CardColor.NEUTRON,"images/cartas/plus_4.png");
-            Card cJoker = new Card(CardNormalType.JOKER,CardColor.NEUTRON,"images/cartas/joker.png");
+            Card cPlusFour = new Card(CardType.PLUS_FOUR,CardColor.NEUTRON,"images/cartas/plus_4.png");
+            Card cJoker = new Card(CardType.JOKER,CardColor.NEUTRON,"images/cartas/joker.png");
             
             especialCardList.add(cPlusFour);
             especialCardList.add(cJoker);

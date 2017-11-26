@@ -8,7 +8,6 @@ package view.game;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,7 +16,8 @@ import javax.swing.JOptionPane;
 public class GamePanel extends javax.swing.JPanel {
     private GamePanelController controller;
     
-    Map<Integer, JLabel[]> hashMapPlayersCards =new HashMap<>();
+    private Map<Integer, JLabel[]> hashMapPlayersCards =new HashMap<>();
+    private JLabel[] timeUserLabel;
             
     /**
      * Creates new form GamePanel
@@ -85,6 +85,12 @@ public class GamePanel extends javax.swing.JPanel {
             active_u2,
             active_u3
         });
+        timeUserLabel = new JLabel[]{
+            txt_time_u0,
+            txt_time_u1,
+            txt_time_u2,
+            txt_time_u3
+        };
     }
     
     public JLabel[] getLabels(int userIndex){
@@ -113,7 +119,9 @@ public class GamePanel extends javax.swing.JPanel {
         card_u1_c5 = new javax.swing.JLabel();
         card_u1_c6 = new javax.swing.JLabel();
         card_u1_start = new javax.swing.JLabel();
+        txt_time_u1 = new javax.swing.JLabel();
         jPanel20 = new javax.swing.JPanel();
+        btnOut = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
@@ -127,6 +135,7 @@ public class GamePanel extends javax.swing.JPanel {
         card_u2_c5 = new javax.swing.JLabel();
         card_u2_c6 = new javax.swing.JLabel();
         card_u2_start = new javax.swing.JLabel();
+        txt_time_u2 = new javax.swing.JLabel();
         panel = new javax.swing.JPanel();
         panelTable = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -147,6 +156,8 @@ public class GamePanel extends javax.swing.JPanel {
         card_u0_c5 = new javax.swing.JLabel();
         card_u0_c6 = new javax.swing.JLabel();
         card_u0_start = new javax.swing.JLabel();
+        btnMoreCards = new javax.swing.JLabel();
+        txt_time_u0 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
@@ -161,6 +172,7 @@ public class GamePanel extends javax.swing.JPanel {
         card_u3_c5 = new javax.swing.JLabel();
         card_u3_c6 = new javax.swing.JLabel();
         card_u3_start = new javax.swing.JLabel();
+        txt_time_u3 = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
         btnStart = new javax.swing.JButton();
 
@@ -179,7 +191,7 @@ public class GamePanel extends javax.swing.JPanel {
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 217, Short.MAX_VALUE)
+            .addGap(0, 206, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel18);
@@ -232,21 +244,39 @@ public class GamePanel extends javax.swing.JPanel {
         card_u1_start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
         jPanel13.add(card_u1_start, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, 80));
 
+        txt_time_u1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        txt_time_u1.setForeground(new java.awt.Color(255, 51, 51));
+        txt_time_u1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txt_time_u1.setText("00:05");
+        jPanel13.add(txt_time_u1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 70, 20));
+
         jPanel19.add(jPanel13);
 
         jPanel3.add(jPanel19);
 
         jPanel20.setBackground(new java.awt.Color(204, 255, 255));
 
+        btnOut.setText("Voltar");
+        btnOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOutActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
         jPanel20.setLayout(jPanel20Layout);
         jPanel20Layout.setHorizontalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
+            .addGroup(jPanel20Layout.createSequentialGroup()
+                .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 229, Short.MAX_VALUE))
         );
         jPanel20Layout.setVerticalGroup(
             jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 217, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+                .addContainerGap(188, Short.MAX_VALUE)
+                .addComponent(btnOut)
+                .addGap(14, 14, 14))
         );
 
         jPanel3.add(jPanel20);
@@ -304,6 +334,12 @@ public class GamePanel extends javax.swing.JPanel {
         card_u2_start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
         jPanel10.add(card_u2_start, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, 80));
 
+        txt_time_u2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        txt_time_u2.setForeground(new java.awt.Color(255, 51, 51));
+        txt_time_u2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txt_time_u2.setText("00:05");
+        jPanel10.add(txt_time_u2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 70, 20));
+
         jPanel9.add(jPanel10);
 
         jPanel6.add(jPanel9);
@@ -349,42 +385,51 @@ public class GamePanel extends javax.swing.JPanel {
 
         icon_u0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         icon_u0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user/user_3.png"))); // NOI18N
-        jPanel11.add(icon_u0, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 15, 70, 60));
+        jPanel11.add(icon_u0, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 5, 70, 60));
 
         active_u0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         active_u0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/FundoUser.png"))); // NOI18N
-        jPanel11.add(active_u0, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, -1, -1));
+        jPanel11.add(active_u0, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 0, -1, -1));
 
         card_u0_c0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         card_u0_c0.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_c0, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, 80));
+        jPanel11.add(card_u0_c0, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, 80));
 
         card_u0_c1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         card_u0_c1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_c1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, 80));
+        jPanel11.add(card_u0_c1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, -1, 80));
 
         card_u0_c2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         card_u0_c2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_c2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, -1, 80));
+        jPanel11.add(card_u0_c2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, 80));
 
         card_u0_c3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         card_u0_c3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_c3, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, -1, 80));
+        jPanel11.add(card_u0_c3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, 80));
 
         card_u0_c4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         card_u0_c4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_c4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 120, -1, 80));
+        jPanel11.add(card_u0_c4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, -1, 80));
 
         card_u0_c5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         card_u0_c5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_c5, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, -1, 80));
+        jPanel11.add(card_u0_c5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, -1, 80));
 
         card_u0_c6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         card_u0_c6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_c6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 120, -1, 80));
+        jPanel11.add(card_u0_c6, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, -1, 80));
 
         card_u0_start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
-        jPanel11.add(card_u0_start, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, 80));
+        jPanel11.add(card_u0_start, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, -1, 80));
+
+        btnMoreCards.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/more_cards.png"))); // NOI18N
+        jPanel11.add(btnMoreCards, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 140, -1, -1));
+
+        txt_time_u0.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        txt_time_u0.setForeground(new java.awt.Color(255, 51, 51));
+        txt_time_u0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txt_time_u0.setText("00:05");
+        jPanel11.add(txt_time_u0, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 70, 20));
 
         jPanel5.add(jPanel11);
 
@@ -405,7 +450,7 @@ public class GamePanel extends javax.swing.JPanel {
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 217, Short.MAX_VALUE)
+            .addGap(0, 197, Short.MAX_VALUE)
         );
 
         jPanel12.add(jPanel21);
@@ -458,6 +503,12 @@ public class GamePanel extends javax.swing.JPanel {
         card_u3_start.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
         jPanel14.add(card_u3_start, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, 80));
 
+        txt_time_u3.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        txt_time_u3.setForeground(new java.awt.Color(255, 51, 51));
+        txt_time_u3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        txt_time_u3.setText("00:05");
+        jPanel14.add(txt_time_u3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 70, 20));
+
         jPanel22.add(jPanel14);
 
         jPanel12.add(jPanel22);
@@ -476,14 +527,13 @@ public class GamePanel extends javax.swing.JPanel {
         jPanel23Layout.setHorizontalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel23Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnStart)
-                .addContainerGap(323, Short.MAX_VALUE))
+                .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 229, Short.MAX_VALUE))
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel23Layout.createSequentialGroup()
-                .addContainerGap(175, Short.MAX_VALUE)
+                .addContainerGap(197, Short.MAX_VALUE)
                 .addComponent(btnStart)
                 .addGap(14, 14, 14))
         );
@@ -499,6 +549,11 @@ public class GamePanel extends javax.swing.JPanel {
         btnStart.setVisible(false);
     }//GEN-LAST:event_btnStartActionPerformed
 
+    private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
+        // TODO add your handling code here:
+        controller.returnPage();
+    }//GEN-LAST:event_btnOutActionPerformed
+
    
 
 
@@ -507,6 +562,8 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JLabel active_u1;
     private javax.swing.JLabel active_u2;
     private javax.swing.JLabel active_u3;
+    private javax.swing.JLabel btnMoreCards;
+    private javax.swing.JButton btnOut;
     private javax.swing.JButton btnStart;
     private javax.swing.JLabel card_u0_c0;
     private javax.swing.JLabel card_u0_c1;
@@ -567,6 +624,10 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelTable;
+    private javax.swing.JLabel txt_time_u0;
+    private javax.swing.JLabel txt_time_u1;
+    private javax.swing.JLabel txt_time_u2;
+    private javax.swing.JLabel txt_time_u3;
     // End of variables declaration//GEN-END:variables
 
     private void disableLabel() {
@@ -613,6 +674,12 @@ public class GamePanel extends javax.swing.JPanel {
             active_u3.setVisible(false);
             
             btnStart.setVisible(false);
+            btnMoreCards.setEnabled(false);
+            
+            txt_time_u0.setVisible(false);
+            txt_time_u1.setVisible(false);
+            txt_time_u2.setVisible(false);
+            txt_time_u3.setVisible(false);
     }
 
     public void showStartButton() {
@@ -629,6 +696,14 @@ public class GamePanel extends javax.swing.JPanel {
         discard_1.setVisible(b);
         discard_2.setVisible(b);
         discard_3.setVisible(b);
+    }
+
+    void updateTimeForUser(int playerIndex, int time) {
+        timeUserLabel[playerIndex].setText("00:0"+time);
+    }
+
+    void setTimePlayerVisible(int playerIndex, boolean b) {
+        timeUserLabel[playerIndex].setVisible(b);
     }
 
     

@@ -9,7 +9,7 @@ package model.card;
  *
  * @author sergi
  */
-public enum CardNormalType {
+public enum CardType {
     ZERO(0),
     ONE(1),
     TWO(2),
@@ -28,7 +28,7 @@ public enum CardNormalType {
     PLUS_FOUR(50);
     
     int value;
-    CardNormalType(int value) {    
+    CardType(int value) {    
         this.value= value;
     }
     public int getValue(){

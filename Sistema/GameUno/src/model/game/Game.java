@@ -7,6 +7,7 @@ package model.game;
 
 import java.util.Stack;
 import model.card.Card;
+import model.card.CardColor;
 import model.player.Player;
 
 
@@ -21,6 +22,7 @@ public class Game {
     private Player[] players = new Player[4];
     private GameMode gameMode;
     private GameStatus gameStatus;
+    private CardColor gameActualColor;
     
     private int gameFirstPlayer;
     private int actualPlayerIndex;
@@ -29,6 +31,23 @@ public class Game {
         return gameMode;
     }
 
+    public CardColor getGameActualColor() {
+        return gameActualColor;
+    }
+
+    public void setGameActualColor(CardColor gameActualColor) {
+        this.gameActualColor = gameActualColor;
+    }
+
+    public int getGameFirstPlayer() {
+        return gameFirstPlayer;
+    }
+
+    public void setGameFirstPlayer(int gameFirstPlayer) {
+        this.gameFirstPlayer = gameFirstPlayer;
+    }
+
+    
     public GameStatus getGameStatus() {
         return gameStatus;
     }
