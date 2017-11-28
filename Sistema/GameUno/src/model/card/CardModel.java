@@ -16,7 +16,7 @@ import java.util.Stack;
  */
 public class CardModel {
     public static ArrayList<CardType>  normalCardTypes = new ArrayList<>();
-    public static ArrayList<CardType> especialCardTypes = new ArrayList<>();
+    public static ArrayList<CardType> efectCardTypes = new ArrayList<>();
     public static ArrayList<CardType> jokerCardTypes = new ArrayList<>();
     
     private ArrayList<Card> redCardList,greenCardList,blueCardList,yellowCardList,especialCardList;
@@ -35,9 +35,9 @@ public class CardModel {
         normalCardTypes.add(CardType.NINE);
                     
         //Especial Cartas
-        especialCardTypes.add(CardType.CANCEL);
-        especialCardTypes.add(CardType.PLUS_TWO);
-        especialCardTypes.add(CardType.REVERSES);
+        efectCardTypes.add(CardType.CANCEL);
+        efectCardTypes.add(CardType.PLUS_TWO);
+        efectCardTypes.add(CardType.REVERSES);
         //Joker cards
         jokerCardTypes.add(CardType.JOKER);
         jokerCardTypes.add(CardType.PLUS_FOUR);
@@ -109,11 +109,11 @@ public class CardModel {
     private void generateEspecialCards() {
         especialCardList = new ArrayList<>();
         //Para as cores
-        for (int i = 0; i < especialCardTypes.size(); i++) {
-                Card cRed = new Card(especialCardTypes.get(i),CardColor.RED,"images/cartas/vermelha/"+especialCardTypes.get(i).toString()+".png");
-                Card cBlue = new Card(especialCardTypes.get(i),CardColor.BLUE,"images/cartas/azul/"+especialCardTypes.get(i).toString()+".png");
-                Card cYellow = new Card(especialCardTypes.get(i),CardColor.YELLOW,"images/cartas/amarela/"+especialCardTypes.get(i).toString()+".png");
-                Card cGreen = new Card(especialCardTypes.get(i),CardColor.GREEN,"images/cartas/verde/"+especialCardTypes.get(i).toString()+".png");
+        for (int i = 0; i < efectCardTypes.size(); i++) {
+                Card cRed = new Card(efectCardTypes.get(i),CardColor.RED,"images/cartas/vermelha/"+efectCardTypes.get(i).toString()+".png");
+                Card cBlue = new Card(efectCardTypes.get(i),CardColor.BLUE,"images/cartas/azul/"+efectCardTypes.get(i).toString()+".png");
+                Card cYellow = new Card(efectCardTypes.get(i),CardColor.YELLOW,"images/cartas/amarela/"+efectCardTypes.get(i).toString()+".png");
+                Card cGreen = new Card(efectCardTypes.get(i),CardColor.GREEN,"images/cartas/verde/"+efectCardTypes.get(i).toString()+".png");
                 
                 redCardList.add(cRed);
                 blueCardList.add(cBlue);

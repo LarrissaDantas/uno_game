@@ -23,6 +23,9 @@ public class Game {
     private GameMode gameMode;
     private GameStatus gameStatus;
     private CardColor gameActualColor;
+    public enum Sense{RIGTH,LEFT};
+    private Sense gameSense;
+    private boolean tableEfected;
     
     private int gameFirstPlayer;
     private int actualPlayerIndex;
@@ -30,6 +33,15 @@ public class Game {
     public GameMode getGameMode() {
         return gameMode;
     }
+
+    public Sense getGameSense() {
+        return gameSense;
+    }
+
+    public void setGameSense(Sense gameSense) {
+        this.gameSense = gameSense;
+    }
+    
 
     public CardColor getGameActualColor() {
         return gameActualColor;
@@ -102,6 +114,15 @@ public class Game {
     public int getActualPlayerIndex() {
         return actualPlayerIndex;
     }
+
+    public boolean isTableEfected() {
+        return tableEfected;
+    }
+
+    public void setTableEfected(boolean tableEfected) {
+        this.tableEfected = tableEfected;
+    }
+    
     
     
     

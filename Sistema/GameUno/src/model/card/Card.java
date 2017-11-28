@@ -10,25 +10,17 @@ package model.card;
  * @author sergi
  */
 public class Card {
-    private CardType cardType;
-    private CardColor cardColor;
-    private String iconSRC;
-    private boolean efectActived;
+    private final CardType cardType;
+    private final CardColor cardColor;
+    private final String iconSRC;
+    
     public Card(CardType myType, CardColor myColor,String iconSRC) {
         this.cardType = myType;
         this.cardColor = myColor;
         this.iconSRC = iconSRC;
     }
 
-    public boolean isEfectActived() {
-        return efectActived;
-    }
-
-    public void setEfectActived(boolean efectActived) {
-        this.efectActived = efectActived;
-    }
-    
-    
+ 
     
     
     public String getIconSRC() {

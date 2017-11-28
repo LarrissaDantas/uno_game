@@ -11,9 +11,9 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
 import model.card.Card;
-import model.card.CardColor;
 import model.card.CardModel;
 import model.card.CardType;
+import model.game.Game.Sense;
 import model.player.Player;
 import model.user.User;
 import model.user.UserModel;
@@ -44,6 +44,9 @@ public class GameModel implements GamePanelEventsInterface {
         //Setar o modo de jogo
         actualGame.setGameMode(gameMode);
 
+        //Definir o sentido inicial do jogo
+        actualGame.setGameSense(Sense.RIGTH);
+
         //Instanciar uma nova pilha de cartas que ja foram jogadas
         actualGame.setStackCardPlayed(new Stack());
 
@@ -56,7 +59,7 @@ public class GameModel implements GamePanelEventsInterface {
 
         //Atribuir a pilha de cartas gerada ao jogo
         actualGame.setStackCard(newStack);
-
+        
         //Gerar os players da partida
         Player[] players = generatePlayers();
 
@@ -96,7 +99,7 @@ public class GameModel implements GamePanelEventsInterface {
      *
      * @return
      */
-    public Card getHeadStackPlayed() {
+    private Card getHeadStackPlayed() {
         try {
             return actualGame.getStackCardPlayed().peek();
         } catch (Exception e) {
@@ -310,12 +313,11 @@ public class GameModel implements GamePanelEventsInterface {
             System.out.println("Pilha de jogadas esta vazia");
             executeCulp(bestCardIndex);
         } else {
-            Card headStackPlayed = getHeadStackPlayed();
             //Verificar punicao
-            if (headStackPlayed.isEfectActived()) {
-                System.out.println("Carta de punição na mesa: "+headStackPlayed.getCardType().toString());
+            if (actualGame.isTableEfected()) {
+                System.out.println("Carta de punição na mesa: "+getHeadStackPlayed().getCardType().toString());
                 //EXECUTA A PUNICAO E TIRA O EFEITO
-                switch (headStackPlayed.getCardType()) {
+                switch (getHeadStackPlayed().getCardType()) {
                     case CANCEL:
 
                         break;
@@ -326,9 +328,8 @@ public class GameModel implements GamePanelEventsInterface {
 
                         break;
                 }
-                headStackPlayed.setEfectActived(false);
+                actualGame.setTableEfected(false);
                 //ATUALIZAR TELA
-                return;
             } else {
                 executeCulp(bestCardIndex);
             }
@@ -420,7 +421,7 @@ public class GameModel implements GamePanelEventsInterface {
     }
 
     private boolean isEfectCard(CardType cardType) {
-        for (CardType attcard : CardModel.especialCardTypes) {
+        for (CardType attcard : CardModel.efectCardTypes) {
             if (attcard.equals(cardType)) {
                 return true;
             }
