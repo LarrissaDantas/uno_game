@@ -10,9 +10,9 @@ package model.card;
  * @author sergi
  */
 public class Card {
-    private CardType cardType;
-    private CardColor cardColor;
-    private String iconSRC;
+    private final CardType cardType;
+    private final CardColor cardColor;
+    private final String iconSRC;
     
     public Card(CardType myType, CardColor myColor,String iconSRC) {
         this.cardType = myType;
@@ -20,6 +20,9 @@ public class Card {
         this.iconSRC = iconSRC;
     }
 
+ 
+    
+    
     public String getIconSRC() {
         return iconSRC;
     }

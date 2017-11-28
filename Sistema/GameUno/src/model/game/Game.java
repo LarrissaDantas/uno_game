@@ -7,6 +7,7 @@ package model.game;
 
 import java.util.Stack;
 import model.card.Card;
+import model.card.CardColor;
 import model.player.Player;
 
 
@@ -21,11 +22,44 @@ public class Game {
     private Player[] players = new Player[4];
     private GameMode gameMode;
     private GameStatus gameStatus;
+    private CardColor gameActualColor;
+    public enum Sense{RIGTH,LEFT};
+    private Sense gameSense;
+    private boolean tableEfected;
+    
+    private int gameFirstPlayer;
+    private int actualPlayerIndex;
     
     public GameMode getGameMode() {
         return gameMode;
     }
 
+    public Sense getGameSense() {
+        return gameSense;
+    }
+
+    public void setGameSense(Sense gameSense) {
+        this.gameSense = gameSense;
+    }
+    
+
+    public CardColor getGameActualColor() {
+        return gameActualColor;
+    }
+
+    public void setGameActualColor(CardColor gameActualColor) {
+        this.gameActualColor = gameActualColor;
+    }
+
+    public int getGameFirstPlayer() {
+        return gameFirstPlayer;
+    }
+
+    public void setGameFirstPlayer(int gameFirstPlayer) {
+        this.gameFirstPlayer = gameFirstPlayer;
+    }
+
+    
     public GameStatus getGameStatus() {
         return gameStatus;
     }
@@ -64,6 +98,32 @@ public class Game {
     public void setPlayers(Player[] players) {
         this.players = players;
     }
+
+    public void setFirstPlayer(int selectFirstPlayer) {
+        this.gameFirstPlayer = selectFirstPlayer;
+    }
+    
+    public int getFirstPlayer() {
+         return this.gameFirstPlayer;
+    }
+
+    void setActualPlayer(int playerPosition) {
+        this.actualPlayerIndex = playerPosition;
+    }
+
+    public int getActualPlayerIndex() {
+        return actualPlayerIndex;
+    }
+
+    public boolean isTableEfected() {
+        return tableEfected;
+    }
+
+    public void setTableEfected(boolean tableEfected) {
+        this.tableEfected = tableEfected;
+    }
+    
+    
     
     
 }

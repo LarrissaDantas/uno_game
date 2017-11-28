@@ -23,7 +23,7 @@ public class LoadPanel extends javax.swing.JPanel {
         initComponents();
         
         //Linha para teste
-        lbBack.setVisible(false);
+        //lbBack.setVisible(false);
         
         progressBar.setMaximum(AppTaskManager.TASK_MAX_VALUE);
         new Thread(new Runnable() {
@@ -35,8 +35,8 @@ public class LoadPanel extends javax.swing.JPanel {
                             txtStatus.setText(AppTaskManager.TASK_STATUS);
                         }else{
                             onLoadComplete();
-                            try{
                                 loadInterface.onLoadComplete();
+                            try{
                             }catch(Exception e){
                                 System.out.println("LoadInterface não atribuida.");
                             }
