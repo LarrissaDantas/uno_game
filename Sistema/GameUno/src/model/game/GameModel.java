@@ -372,7 +372,7 @@ public class GameModel implements GamePanelEventsInterface {
 
     private void executeCulp(int cardIndex) {
         Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
-        //@Teste
+
         if (isPunitionCard(cardToPlay.getCardType())) {
             actualGame.setTableEfected(true);
         }
