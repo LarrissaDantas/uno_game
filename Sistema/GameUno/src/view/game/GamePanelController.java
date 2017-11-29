@@ -13,19 +13,30 @@ import util.AppLog;
 import view.MainFrameController;
 import view.ViewController;
 import model.game.GameEventsInterface;
+
+
+import model.game.GameStatus;
+import view.menu.MenuPanel;
+
 import view.menu.MenuPanelController;
 
 /**
  *
  * @author sergi
  */
-public class GamePanelController implements ViewController, GameEventsInterface {
+public class GamePanelController implements ViewController, GameEventsInterface{
 
     private GamePanel myView;
     private GameModel gameModel = GameModel.myInstance();
+
     private final int MAX_TIME_TO_CULP = 5;
 
     private boolean userClickedOnCard = false;
+
+    private final int MAX_TIME = 5;
+    
+  
+
 
     public GamePanelController() {
         gameModel.setGameStatusInterface(this);
@@ -120,6 +131,29 @@ public class GamePanelController implements ViewController, GameEventsInterface 
         refreshStacksGame();
         refreshPlayersCards(true);
         setUserLoggedCardsEnable(false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+              int [] Tempo = new int[2];
+              while (true){
+                  try {
+                      Thread.sleep(1000);
+                  } catch (InterruptedException ex) {
+                      Logger.getLogger(GamePanelController.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+                  if(Tempo[1]<60){
+                      Tempo[1]++;
+                  }else{
+                      Tempo[0]++;
+                      Tempo[1]= 0;
+                  }
+                  myView.updateLabel( Tempo[0]+":"+ Tempo[1]);
+              }
+             
+            }
+        }).start();
+            
+        
     }
 
     void onBtnStartClicked() {

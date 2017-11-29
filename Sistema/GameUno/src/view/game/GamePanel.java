@@ -176,6 +176,8 @@ public class GamePanel extends javax.swing.JPanel {
         txt_time_u0 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
+        myLabelTime = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel22 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         icon_u3 = new javax.swing.JLabel();
@@ -458,16 +460,39 @@ public class GamePanel extends javax.swing.JPanel {
 
         jPanel21.setBackground(new java.awt.Color(204, 255, 255));
 
+        myLabelTime.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        myLabelTime.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        myLabelTime.setText("00:00");
+        myLabelTime.setToolTipText("");
+        myLabelTime.setName(""); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Microsoft YaHei", 1, 13)); // NOI18N
+        jLabel1.setText("TEMPO DE JOGO");
+
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 390, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
+                .addContainerGap(256, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(23, 23, 23))
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addGap(262, 262, 262)
+                .addComponent(myLabelTime, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 197, Short.MAX_VALUE)
+            .addGroup(jPanel21Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(myLabelTime)
+                .addContainerGap(66, Short.MAX_VALUE))
         );
+
+        myLabelTime.getAccessibleContext().setAccessibleDescription("");
 
         jPanel12.add(jPanel21);
 
@@ -549,7 +574,7 @@ public class GamePanel extends javax.swing.JPanel {
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel23Layout.createSequentialGroup()
-                .addContainerGap(197, Short.MAX_VALUE)
+                .addContainerGap(277, Short.MAX_VALUE)
                 .addComponent(btnStart)
                 .addGap(14, 14, 14))
         );
@@ -628,6 +653,10 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JLabel icon_u1;
     private javax.swing.JLabel icon_u2;
     private javax.swing.JLabel icon_u3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -643,6 +672,7 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel myLabelTime;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelTable;
     private javax.swing.JLabel stack_c1;
@@ -742,6 +772,11 @@ public class GamePanel extends javax.swing.JPanel {
         timeUserLabel[playerIndex].setVisible(b);
     }
 
+    void updateLabel(String time) {
+      myLabelTime.setText(time);
+    }
+
+    
     void setActiveUserLabelsVisible(boolean b) {
         active_u0.setVisible(b);
         active_u1.setVisible(b);
