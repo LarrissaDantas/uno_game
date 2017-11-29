@@ -5,11 +5,14 @@
  */
 package model.game;
 
+import exception.GameException;
 import view.game.GamePanelEventsInterface;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.card.Card;
 import model.card.CardModel;
 import model.card.CardType;
@@ -306,29 +309,24 @@ public class GameModel implements GamePanelEventsInterface {
     public void machineCulp() {
         //JOGADA DE IA
         System.out.println("Machine Culp");
-
-        //TODO: Verificar se há algum efeito de jogo para ser aplicado
-
-        //Verificar se a pilha esta vazia para poder jogar
-        if (actualGame.getStackCardPlayed().isEmpty()) {
-            System.out.println("Pilha de jogadas esta vazia");
-            executeCulp(0);
-            getActualPlayer().getCardsOnHand().remove(0);
-        } else {
-            if (!verifyPunition()) {
+       
+            //TODO: Verificar se há algum efeito de jogo para ser aplicado
+            //Verificar se a pilha esta vazia para poder jogar
+            if (actualGame.getStackCardPlayed().isEmpty()) {
+                System.out.println("Pilha de jogadas esta vazia");
+                executeCulp(0);
+            } else {
                 executeCulp(0);
             }
-        }
+     
         gameEvents.culpExecuted();
 
     }
 
     @Override
-    public void userCulp(int cardIndex) {
+    public void userCulp(int cardIndex)  {
         //JOGADA DE USUARIO
         System.out.println("User Culp");
-
-        
         //TODO: Verificar se há algum efeito de jogo para ser aplicado
 
         //Verificar se a pilha esta vazia para poder jogar
@@ -336,40 +334,40 @@ public class GameModel implements GamePanelEventsInterface {
             System.out.println("Pilha de jogadas esta vazia");
             executeCulp(cardIndex);
         } else {
-            if (!verifyPunition()) {
-                executeCulp(cardIndex);
-            }else{
-                executeCulp(cardIndex);
-            }
+            executeCulp(cardIndex);
         }
         gameEvents.culpExecuted();
+
     }
 
-    private boolean verifyPunition() {
+    private void verifyPunition() throws GameException {
         //Verificar punicao
         if (actualGame.isTableEfected()) {
             System.out.println("Carta de punição na mesa: " + getHeadStackPlayed().getCardType().toString());
             //EXECUTA A PUNICAO E RETIRA O EFEITO DA MESA
             switch (getHeadStackPlayed().getCardType()) {
                 case CANCEL:
-                    System.out.println("Punição de Cancelar");
                     changePlayer();
-                    break;
+                    actualGame.setTableEfected(false);
+                    System.out.println("Player :"+getActualPlayer().getUser().getName() + " recebeu uma punição de "+getHeadStackPlayed().getCardType().toString());
+                    throw new GameException(" punição de cancelar");
                 case PLUS_TWO:
-                    System.out.println("Punição de +2");
                     plusCardToActualPlayer(2);
                     changePlayer();
-                    break;
+                    actualGame.setTableEfected(false);
+                    System.out.println("Player :"+getActualPlayer().getUser().getName() + " recebeu uma punição de "+getHeadStackPlayed().getCardType().toString());
+                    throw new GameException(" punição de +2");
+
                 case PLUS_FOUR:
-                    System.out.println("Punição de +4");
                     plusCardToActualPlayer(4);
                     changePlayer();
-                    break;
+                    actualGame.setTableEfected(false);
+                    System.out.println("Player :"+getActualPlayer().getUser().getName() + " recebeu uma punição de "+getHeadStackPlayed().getCardType().toString());
+                    throw new GameException(" punição de +4");
             }
-            actualGame.setTableEfected(false);
-            return true;
+
         }
-        return false;
+
     }
 
     private void executeCulp(int cardIndex) {
@@ -584,10 +582,16 @@ public class GameModel implements GamePanelEventsInterface {
 
     @Override
     public void onViewUpdate() {
-        if (getActualPlayer().getMyType() == Player.PlayerType.HUMAN) {
-            gameEvents.requestLoggedPlayerCulp();
-        } else {
-            gameEvents.requestMachinePlayerCulp(actualGame.getActualPlayerPosition());
+        try {
+            verifyPunition();
+            if (getActualPlayer().getMyType() == Player.PlayerType.HUMAN) {
+                gameEvents.requestLoggedPlayerCulp();
+            } else {
+                gameEvents.requestMachinePlayerCulp(actualGame.getActualPlayerPosition());
+            }
+        } catch (GameException ex) {
+            gameEvents.culpExecuted();
+            System.out.println("Punição na mesa");
         }
     }
 

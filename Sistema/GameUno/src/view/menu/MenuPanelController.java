@@ -44,7 +44,7 @@ public class MenuPanelController implements ViewController{
             new TutorialPanelController().startView();
         }
         //@Teste
-        //onBtnStartClicked();
+        onBtnStartClicked();
     }
   
     

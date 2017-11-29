@@ -5,8 +5,10 @@
  */
 package view.game;
 
+import exception.GameException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import model.card.Card;
 import model.game.GameModel;
 import util.AppLog;
@@ -14,17 +16,13 @@ import view.MainFrameController;
 import view.ViewController;
 import model.game.GameEventsInterface;
 
-
-import model.game.GameStatus;
-import view.menu.MenuPanel;
-
 import view.menu.MenuPanelController;
 
 /**
  *
  * @author sergi
  */
-public class GamePanelController implements ViewController, GameEventsInterface{
+public class GamePanelController implements ViewController, GameEventsInterface {
 
     private GamePanel myView;
     private GameModel gameModel = GameModel.myInstance();
@@ -34,9 +32,6 @@ public class GamePanelController implements ViewController, GameEventsInterface{
     private boolean userClickedOnCard = false;
 
     private final int MAX_TIME = 5;
-    
-  
-
 
     public GamePanelController() {
         gameModel.setGameStatusInterface(this);
@@ -74,52 +69,6 @@ public class GamePanelController implements ViewController, GameEventsInterface{
         myView.showStartButton();
     }
 
-    private void refreshPlayersCards(boolean distribute) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < gameModel.getGamePlayers().length; i++) {
-                    for (int j = 0; j < gameModel.getGamePlayers()[i].getCardsOnHand().size(); j++) {
-                        String scrUserCard = gameModel.getGamePlayers()[i].getCardsOnHand().get(j).getIconSRC();
-                        try {
-                            if (i == 0) {
-                                if (j <= 6) {
-                                    myView.getLabels(i)[j].setIcon(new javax.swing.ImageIcon(getClass().getResource("/" + scrUserCard)));
-                                    myView.getLabels(i)[j].setName(String.valueOf(j));
-                                    //Adicionar click de cada label
-                                    myView.getLabels(i)[j].addMouseListener(new java.awt.event.MouseAdapter() {
-                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                            myView.onUserLabelCardClicked(evt);
-                                        }
-                                    });
-                                } else {
-                                    //Adicionar cartas restantes no panel auxiliar
-                                }
-                            }
-                            if (j <= myView.getLabels(i).length) {
-                                myView.getLabels(i)[j].setVisible(true);
-                            } else {
-                                myView.getLabels(i)[j].setVisible(false);
-                            }
-                            if (distribute) {
-                                Thread.sleep(150);
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Erro ao atribuir carta :" + scrUserCard + " Para player: "+gameModel.getGamePlayers()[i].getUser().getName()+" E:" + e.getMessage());
-                        }
-
-                    }
-
-                }
-                if (distribute) {
-                    myView.setStartCardVisible(false);
-                    gameModel.onCardsShared();
-                }
-            }
-        }).start();
-
-    }
-
     private void setUserLoggedCardsEnable(boolean b) {
         for (int j = 0; j < gameModel.getGamePlayers()[0].getCardsOnHand().size(); j++) {
             myView.getLabels(0)[j].setEnabled(b);
@@ -127,33 +76,58 @@ public class GamePanelController implements ViewController, GameEventsInterface{
     }
 
     @Override
+    public void refreshPlayerCards(int userIndex) {
+        myView.setInvisibleUserCardsLabel(userIndex);//Desabilitar todas, antes de atualizar
+        for (int i = 0; i < gameModel.getGamePlayers()[userIndex].getCardsOnHand().size(); i++) {
+            if (userIndex == 0) {//Apenas para o usuario Logado
+                if (i < 7) {
+                    String srcImg = gameModel.getGamePlayers()[userIndex].getCardsOnHand().get(i).getIconSRC();
+                    myView.getLabels(userIndex)[i].setIcon(new ImageIcon(getClass().getResource("/" + srcImg)));
+                    //Atribuir o click para cada label
+                    myView.getLabels(userIndex)[i].setName(String.valueOf(i));
+                    myView.getLabels(userIndex)[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                            myView.onUserLabelCardClicked(evt);
+                        }
+                    });
+                } else {
+                    //Limpar o ArrayList
+
+                }
+            }
+            if (i < 7) {
+                myView.getLabels(userIndex)[i].setVisible(true);
+            }
+        }
+    }
+
+    @Override
     public void distributeCards() {
         refreshStacksGame();
-        refreshPlayersCards(true);
+        distributePlayerCards();
         setUserLoggedCardsEnable(false);
         new Thread(new Runnable() {
             @Override
             public void run() {
-              int [] Tempo = new int[2];
-              while (true){
-                  try {
-                      Thread.sleep(1000);
-                  } catch (InterruptedException ex) {
-                      Logger.getLogger(GamePanelController.class.getName()).log(Level.SEVERE, null, ex);
-                  }
-                  if(Tempo[1]<60){
-                      Tempo[1]++;
-                  }else{
-                      Tempo[0]++;
-                      Tempo[1]= 0;
-                  }
-                  myView.updateLabel( Tempo[0]+":"+ Tempo[1]);
-              }
-             
+                int[] Tempo = new int[2];
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(GamePanelController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (Tempo[1] < 60) {
+                        Tempo[1]++;
+                    } else {
+                        Tempo[0]++;
+                        Tempo[1] = 0;
+                    }
+                    myView.updateLabel(Tempo[0] + ":" + Tempo[1]);
+                }
+
             }
         }).start();
-            
-        
+
     }
 
     void onBtnStartClicked() {
@@ -162,7 +136,6 @@ public class GamePanelController implements ViewController, GameEventsInterface{
 
     @Override
     public void requestLoggedPlayerCulp() {
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -182,35 +155,37 @@ public class GamePanelController implements ViewController, GameEventsInterface{
                 }
                 myView.setTimePlayerVisible(0, false);
                 setUserLoggedCardsEnable(false);
+
                 gameModel.userCulp(myView.getSelectedUserCard());
+
                 userClickedOnCard = false;
                 myView.setUserCardSelectedIndex(0);
+                refreshPlayerCards(0);
             }
         }).start();
     }
 
     @Override
     public void culpExecuted() {
-        refreshPlayersCards(false);
         refreshStacksGame();
         refreshActiveActualUser();
-
         gameModel.onViewUpdate();
     }
 
     @Override
-    public void requestMachinePlayerCulp(int playerIndex) {
+    public void requestMachinePlayerCulp(int machinePlayerIndex) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 int time_remaining = MAX_TIME_TO_CULP;
                 //System.out.println(".run() do RequestMachinePlayerCulp");
-                myView.setTimePlayerVisible(playerIndex, true);
-                myView.updateTimeForUser(playerIndex, MAX_TIME_TO_CULP);
+                myView.setTimePlayerVisible(machinePlayerIndex, true);
+                myView.updateTimeForUser(machinePlayerIndex, MAX_TIME_TO_CULP);
                 while (time_remaining > 0) {
                     if (time_remaining == 2) {//Com alguns segundos à IA joga
-                        myView.setTimePlayerVisible(playerIndex, false);
+                        myView.setTimePlayerVisible(machinePlayerIndex, false);
                         gameModel.machineCulp();
+                        refreshPlayerCards(machinePlayerIndex);
                         return;
                     }
                     try {
@@ -219,9 +194,8 @@ public class GamePanelController implements ViewController, GameEventsInterface{
                         Logger.getLogger(GamePanelController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     time_remaining--;
-                    myView.updateTimeForUser(playerIndex, time_remaining);
+                    myView.updateTimeForUser(machinePlayerIndex, time_remaining);
                 }
-                myView.setTimePlayerVisible(playerIndex, false);
             }
         }).start();
 
@@ -257,8 +231,31 @@ public class GamePanelController implements ViewController, GameEventsInterface{
         myView.getLabels(5)[gameModel.getActualPlayerPosition()].setVisible(true);
     }
 
-    void setUserClickedOnCard(boolean b) {
+    void executeInstantUserCulp(boolean b) {
         this.userClickedOnCard = b;
+    }
+
+    private void distributePlayerCards() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < gameModel.getGamePlayers().length; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        try {
+                            myView.getLabels(i)[j].setVisible(true);
+                            Thread.sleep(150);
+                        } catch (Exception e) {
+                            System.out.println("Erro ao atribuir carta");
+                        }
+
+                    }
+
+                }
+                myView.setStartCardVisible(false);
+                refreshPlayerCards(0);
+                gameModel.onCardsShared();
+            }
+        }).start();
     }
 
 }

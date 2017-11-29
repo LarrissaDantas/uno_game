@@ -594,15 +594,16 @@ public class GamePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         controller.returnPage();
     }//GEN-LAST:event_btnOutActionPerformed
-    public void onUserLabelCardClicked(java.awt.event.MouseEvent evt){
+    public void onUserLabelCardClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
-        JLabel labelClicked = (JLabel)evt.getComponent();
-        if(labelClicked.isEnabled()){
-            userCardSelecteIndex=Integer.parseInt(labelClicked.getName());
-            controller.setUserClickedOnCard(true);
+        JLabel labelClicked = (JLabel) evt.getComponent();
+        if (labelClicked.isEnabled()) {
+            userCardSelecteIndex = Integer.parseInt(labelClicked.getName());
+            controller.executeInstantUserCulp(true);
         }
     }
-    public void setUserCardSelectedIndex(int index){
+
+    public void setUserCardSelectedIndex(int index) {
         this.userCardSelecteIndex = index;
     }
 
@@ -752,6 +753,48 @@ public class GamePanel extends javax.swing.JPanel {
         card_u3_start.setVisible(b);
     }
 
+    public void setInvisibleUserCardsLabel(int index) {
+        switch (index) {
+            case 0:
+                card_u0_c0.setVisible(false);
+                card_u0_c1.setVisible(false);
+                card_u0_c2.setVisible(false);
+                card_u0_c3.setVisible(false);
+                card_u0_c4.setVisible(false);
+                card_u0_c5.setVisible(false);
+                card_u0_c6.setVisible(false);
+                break;
+            case 1:
+                card_u1_c0.setVisible(false);
+                card_u1_c1.setVisible(false);
+                card_u1_c2.setVisible(false);
+                card_u1_c3.setVisible(false);
+                card_u1_c4.setVisible(false);
+                card_u1_c5.setVisible(false);
+                card_u1_c6.setVisible(false);
+                break;
+            case 2:
+                card_u2_c0.setVisible(false);
+                card_u2_c1.setVisible(false);
+                card_u2_c2.setVisible(false);
+                card_u2_c3.setVisible(false);
+                card_u2_c4.setVisible(false);
+                card_u2_c5.setVisible(false);
+                card_u2_c6.setVisible(false);
+                break;
+            case 3:
+                card_u3_c0.setVisible(false);
+                card_u3_c1.setVisible(false);
+                card_u3_c2.setVisible(false);
+                card_u3_c3.setVisible(false);
+                card_u3_c4.setVisible(false);
+                card_u3_c5.setVisible(false);
+                card_u3_c6.setVisible(false);
+                break;
+                
+        }
+    }
+
     void setStackPlayedVisible(boolean b) {
         discard_1.setVisible(b);
         discard_2.setVisible(b);
@@ -773,10 +816,9 @@ public class GamePanel extends javax.swing.JPanel {
     }
 
     void updateLabel(String time) {
-      myLabelTime.setText(time);
+        myLabelTime.setText(time);
     }
 
-    
     void setActiveUserLabelsVisible(boolean b) {
         active_u0.setVisible(b);
         active_u1.setVisible(b);

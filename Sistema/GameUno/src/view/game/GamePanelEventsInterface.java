@@ -5,6 +5,7 @@
  */
 package view.game;
 
+import exception.GameException;
 import model.card.Card;
 
 /**

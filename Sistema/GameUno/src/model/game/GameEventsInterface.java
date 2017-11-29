@@ -20,6 +20,8 @@ public interface GameEventsInterface {
 
     public void requestMachinePlayerCulp(int playerIndex);
     
+    public void refreshPlayerCards(int playerIndex);
+    
    
     
 }

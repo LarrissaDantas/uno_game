@@ -5,13 +5,6 @@
  */
 package view;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Label;
-import java.awt.Point;
-import java.awt.Rectangle;
-import javax.swing.JPanel;
-import kernel.task.AppTask;
 import view.notification.NotificationTime;
 import view.notification.NotificationType;
 import view.notification.NotificationManagerInterface;
@@ -21,21 +14,15 @@ import view.notification.NotificationManagerInterface;
  * @author sergi
  */
 public class MainFrame extends javax.swing.JFrame {
-    private MainFrameController controller;
+   
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents(); 
-        setExtendedState(MAXIMIZED_BOTH);
+        //setExtendedState(MAXIMIZED_BOTH);
     }
-    /**
-     * Settar controller do MainFrame
-     * @param controller 
-     */
-    public void setController(MainFrameController controller) {
-        this.controller = controller;
-    }
+    
     
     
     /**
@@ -49,6 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
+        setPreferredSize(new java.awt.Dimension(1000, 600));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
