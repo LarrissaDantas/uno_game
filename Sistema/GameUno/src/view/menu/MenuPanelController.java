@@ -43,6 +43,8 @@ public class MenuPanelController implements ViewController{
         if(UserModel.USER_LOGGED.getFirstContact()==AppUtil.USER_FIRST_CONTACT_VALUE){
             new TutorialPanelController().startView();
         }
+        //Teste
+        onBtnStartClicked();
     }
   
     

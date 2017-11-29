@@ -17,6 +17,7 @@ import model.game.Game.Sense;
 import model.player.Player;
 import model.user.User;
 import model.user.UserModel;
+import util.AppLog;
 
 /**
  * Modelo de jogo
@@ -59,25 +60,27 @@ public class GameModel implements GamePanelEventsInterface {
 
         //Atribuir a pilha de cartas gerada ao jogo
         actualGame.setStackCard(newStack);
-        
+
         //Gerar os players da partida
         Player[] players = generatePlayers();
 
         actualGame.setPlayers(players);
 
         //Decidir e Atribuir o primeiro jogador
-        actualGame.setFirstPlayer(generateFirstPlayer());
+        actualGame.setFirstPlayerPosition(generateFirstPlayer());
 
-        actualGame.setActualPlayer(actualGame.getFirstPlayer());
+        //Atribuir o jogador da vez
+        actualGame.setActualPlayerPosition(actualGame.getFirstPlayerPosition());
 
         //Distribui as cartas
         shareUserCards(players);
 
         //Jogo criado
         actualGame.setGameStatus(GameStatus.CREATED);
+
     }
 
-    public Stack<Card> actualStakCard() {
+    public Stack<Card> getActualStakCard() {
         return actualGame.getStackCard();
     }
 
@@ -258,7 +261,7 @@ public class GameModel implements GamePanelEventsInterface {
      * @return A posicao do jogador definido para iniciar a partida
      */
     public int getFirstPlayer() {
-        return this.actualGame.getFirstPlayer();
+        return this.actualGame.getFirstPlayerPosition();
     }
 
     /**
@@ -267,7 +270,7 @@ public class GameModel implements GamePanelEventsInterface {
      * @return O jogador da vez
      */
     public Player getActualPlayer() {
-        return actualGame.getPlayers()[actualGame.getActualPlayerIndex()];
+        return actualGame.getPlayers()[actualGame.getActualPlayerPosition()];
     }
 
     @Override
@@ -288,7 +291,7 @@ public class GameModel implements GamePanelEventsInterface {
         if (getActualPlayer().getMyType() == Player.PlayerType.HUMAN) {
             gameEvents.requestLoggedPlayerCulp();
         } else {
-            gameEvents.requestMachinePlayerCulp(actualGame.getActualPlayerIndex());
+            gameEvents.requestMachinePlayerCulp(actualGame.getActualPlayerPosition());
         }
 
     }
@@ -296,48 +299,91 @@ public class GameModel implements GamePanelEventsInterface {
     @Override
     public void userLoggedCulp(Card cardToPlay) {
         //JOGADA DE USUARIO
-        
+
     }
 
     @Override
     public void machineCulp() {
         //JOGADA DE IA
-        System.out.println("MachineCulp");
+        System.out.println("Machine Culp");
 
-        //DECIDIR QUAL MELHOR CARTA E ETC
-        Card bestCardIndex = getActualPlayer().getCardsOnHand().get(0);
         //TODO: Verificar se há algum efeito de jogo para ser aplicado
 
         //Verificar se a pilha esta vazia para poder jogar
         if (actualGame.getStackCardPlayed().isEmpty()) {
             System.out.println("Pilha de jogadas esta vazia");
-            executeCulp(bestCardIndex);
+            executeCulp(0);
+            getActualPlayer().getCardsOnHand().remove(0);
         } else {
-            //Verificar punicao
-            if (actualGame.isTableEfected()) {
-                System.out.println("Carta de punição na mesa: "+getHeadStackPlayed().getCardType().toString());
-                //EXECUTA A PUNICAO E TIRA O EFEITO
-                switch (getHeadStackPlayed().getCardType()) {
-                    case CANCEL:
-
-                        break;
-                    case PLUS_TWO:
-
-                        break;
-                    case PLUS_FOUR:
-
-                        break;
-                }
-                actualGame.setTableEfected(false);
-                //ATUALIZAR TELA
-            } else {
-                executeCulp(bestCardIndex);
+            if (!verifyPunition()) {
+                executeCulp(0);
             }
         }
+        gameEvents.culpExecuted();
 
     }
 
-    private void executeCulp(Card cardToPlay) {
+    @Override
+    public void userCulp(int cardIndex) {
+        //JOGADA DE USUARIO
+        System.out.println("User Culp");
+
+        
+        //TODO: Verificar se há algum efeito de jogo para ser aplicado
+
+        //Verificar se a pilha esta vazia para poder jogar
+        if (actualGame.getStackCardPlayed().isEmpty()) {
+            System.out.println("Pilha de jogadas esta vazia");
+            executeCulp(cardIndex);
+        } else {
+            if (!verifyPunition()) {
+                executeCulp(cardIndex);
+            }else{
+                executeCulp(cardIndex);
+            }
+        }
+        gameEvents.culpExecuted();
+    }
+
+    private boolean verifyPunition() {
+        //Verificar punicao
+        if (actualGame.isTableEfected()) {
+            System.out.println("Carta de punição na mesa: " + getHeadStackPlayed().getCardType().toString());
+            //EXECUTA A PUNICAO E RETIRA O EFEITO DA MESA
+            switch (getHeadStackPlayed().getCardType()) {
+                case CANCEL:
+                    System.out.println("Punição de Cancelar");
+                    changePlayer();
+                    break;
+                case PLUS_TWO:
+                    System.out.println("Punição de +2");
+                    plusCardToActualPlayer(2);
+                    changePlayer();
+                    break;
+                case PLUS_FOUR:
+                    System.out.println("Punição de +4");
+                    plusCardToActualPlayer(4);
+                    changePlayer();
+                    break;
+            }
+            actualGame.setTableEfected(false);
+            return true;
+        }
+        return false;
+    }
+
+    private void executeCulp(int cardIndex) {
+        Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
+        //Teste
+        if (isPunitionCard(cardToPlay.getCardType())) {
+            actualGame.setTableEfected(true);
+        }
+
+        getActualStakCardPlayed().push(cardToPlay);
+        actualGame.setGameActualColor(cardToPlay.getCardColor());
+        getActualPlayer().getCardsOnHand().remove(cardIndex);
+        changePlayer();
+        /*
         //Testar se é possivel jogar
         if (!actualGame.getStackCardPlayed().isEmpty()) {
             Card headStackPlayed = getHeadStackPlayed();
@@ -348,7 +394,7 @@ public class GameModel implements GamePanelEventsInterface {
                 if (((cardToPlay.getCardType().getValue() == headStackPlayed.getCardType().getValue()))
                         || cardToPlay.getCardColor().equals(headStackPlayed.getCardColor())) {
                     //JOGADA
-                    
+
                 } else {
                     //JOGADA RECUSADA
                 }
@@ -379,28 +425,49 @@ public class GameModel implements GamePanelEventsInterface {
                     }
                 } else {
                     //è um JOKER ou +4
-                    
+
                     //JOGADA
                 }
                 //A carta da mao é de efeito e da mesa tbm
-            }else{
+            } else {
                 //JOGADA RECUSADA
             }
             //Nao existe carta na mesa
         } else {
             //Pode Jogar quaquer carta 
-           
-        }
+            getActualStakCardPlayed().push(cardToPlay);
+            actualGame.setGameActualColor(cardToPlay.getCardColor());
+            changePlayer();
 
+        }
+         */
     }
 
     private boolean isNormalCard(CardType cardType) {
-        for (CardType attcard : CardModel.normalCardTypes) {
-            if (attcard.equals(cardType)) {
+        switch (cardType) {
+            case ZERO:
                 return true;
-            }
+            case ONE:
+                return true;
+            case TWO:
+                return true;
+            case THREE:
+                return true;
+            case FOUR:
+                return true;
+            case FIVE:
+                return true;
+            case SIX:
+                return true;
+            case SEVEN:
+                return true;
+            case EIGHT:
+                return true;
+            case NINE:
+                return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     private boolean isEspecialCard(CardType cardType) {
@@ -421,13 +488,107 @@ public class GameModel implements GamePanelEventsInterface {
     }
 
     private boolean isEfectCard(CardType cardType) {
-        for (CardType attcard : CardModel.efectCardTypes) {
-            if (attcard.equals(cardType)) {
+        switch (cardType) {
+            case REVERSES:
                 return true;
-            }
+            case JOKER:
+                return true;
+            default:
+                return false;
         }
-        return false;
     }
 
+    private boolean isPunitionCard(CardType cardType) {
+        switch (cardType) {
+            case CANCEL:
+                return true;
+            case PLUS_TWO:
+                return true;
+            case PLUS_FOUR:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Metodo para mudar para o proximo jogador
+     */
+    private void changePlayer() {
+        int side = 1;
+        if (actualGame.getGameSense().equals(Sense.LEFT)) {
+            side = -1;
+        }
+        int actualPosition = actualGame.getActualPlayerPosition();
+        boolean positionNotSeted = true;
+        while (positionNotSeted) {
+            actualPosition += side;
+
+            if (actualPosition >= 4) {
+                actualPosition = 0;
+            } else if (actualPosition < 0) {
+                actualPosition = 3;
+            }
+
+            actualGame.setActualPlayerPosition(actualPosition);
+            positionNotSeted = false;
+
+        }
+
+    }
+
+    public Card[] getCountCardsStackPlayed(int i) {
+        Stack<Card> t = (Stack<Card>) actualGame.getStackCardPlayed().clone();
+        Card[] cards = new Card[i];
+        for (int j = 0; j < i; j++) {
+            try {
+                cards[j] = t.pop();
+            } catch (Exception e) {
+                System.out.println("(Jogada) Pilha de cartas jogadas nao possui cartas suficientes para retornar às :" + i + " cartas iniciais");
+            }
+        }
+        return cards;
+    }
+
+    public Card[] getCountCardsStack(int i) {
+        Stack<Card> t = (Stack<Card>) actualGame.getStackCard().clone();
+        Card[] cards = new Card[i];
+        for (int j = 0; j < i; j++) {
+            try {
+                cards[j] = t.pop();
+            } catch (Exception e) {
+                System.out.println("(Não Jogada) Pilha de cartas nao possui cartas suficientes para retornar às :" + i + " cartas iniciais");
+            }
+        }
+        return cards;
+    }
+
+    public int getActualPlayerPosition() {
+        return actualGame.getActualPlayerPosition();
+    }
+
+    private void plusCardToActualPlayer(int quant) {
+        try {
+            for (int i = 0; i < quant; i++) {
+                getActualPlayer().getCardsOnHand().add(getActualStakCard().pop());
+            }
+        } catch (Exception e) {
+            System.out.println("Pilha de cartas está vazia");
+            AppLog.error("Pilha de cartas está vazia");
+        }
+    }
+
+    private Stack<Card> getActualStakCardPlayed() {
+        return actualGame.getStackCardPlayed();
+    }
+
+    @Override
+    public void onViewUpdate() {
+        if (getActualPlayer().getMyType() == Player.PlayerType.HUMAN) {
+            gameEvents.requestLoggedPlayerCulp();
+        } else {
+            gameEvents.requestMachinePlayerCulp(actualGame.getActualPlayerPosition());
+        }
+    }
 
 }

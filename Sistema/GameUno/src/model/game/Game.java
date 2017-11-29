@@ -10,26 +10,29 @@ import model.card.Card;
 import model.card.CardColor;
 import model.player.Player;
 
-
 /**
  *
  * @author sergi
  */
 public class Game {
+
     private Stack<Card> stackCard;
     private Stack<Card> stackCardPlayed;
-    
+
+    public enum Sense {
+        RIGTH, LEFT
+    };
+
     private Player[] players = new Player[4];
     private GameMode gameMode;
     private GameStatus gameStatus;
     private CardColor gameActualColor;
-    public enum Sense{RIGTH,LEFT};
     private Sense gameSense;
     private boolean tableEfected;
-    
-    private int gameFirstPlayer;
-    private int actualPlayerIndex;
-    
+
+    private int gameFirstPlayerPosition;
+    private int actualPlayerPosition;
+
     public GameMode getGameMode() {
         return gameMode;
     }
@@ -41,7 +44,6 @@ public class Game {
     public void setGameSense(Sense gameSense) {
         this.gameSense = gameSense;
     }
-    
 
     public CardColor getGameActualColor() {
         return gameActualColor;
@@ -51,15 +53,14 @@ public class Game {
         this.gameActualColor = gameActualColor;
     }
 
-    public int getGameFirstPlayer() {
-        return gameFirstPlayer;
+    public int getGameFirstPlayerPosition() {
+        return gameFirstPlayerPosition;
     }
 
-    public void setGameFirstPlayer(int gameFirstPlayer) {
-        this.gameFirstPlayer = gameFirstPlayer;
+    public void setGameFirstPlayerPosition(int gameFirstPlayerPosition) {
+        this.gameFirstPlayerPosition = gameFirstPlayerPosition;
     }
 
-    
     public GameStatus getGameStatus() {
         return gameStatus;
     }
@@ -75,14 +76,11 @@ public class Game {
     public void setStackCardPlayed(Stack stackCardPlayed) {
         this.stackCardPlayed = stackCardPlayed;
     }
-    
-    
 
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
     }
-    
-    
+
     public Stack<Card> getStackCard() {
         return stackCard;
     }
@@ -99,20 +97,20 @@ public class Game {
         this.players = players;
     }
 
-    public void setFirstPlayer(int selectFirstPlayer) {
-        this.gameFirstPlayer = selectFirstPlayer;
-    }
-    
-    public int getFirstPlayer() {
-         return this.gameFirstPlayer;
+    public void setFirstPlayerPosition(int selectFirstPlayer) {
+        this.gameFirstPlayerPosition = selectFirstPlayer;
     }
 
-    void setActualPlayer(int playerPosition) {
-        this.actualPlayerIndex = playerPosition;
+    public int getFirstPlayerPosition() {
+        return this.gameFirstPlayerPosition;
     }
 
-    public int getActualPlayerIndex() {
-        return actualPlayerIndex;
+    void setActualPlayerPosition(int playerPosition) {
+        this.actualPlayerPosition = playerPosition;
+    }
+
+    public int getActualPlayerPosition() {
+        return actualPlayerPosition;
     }
 
     public boolean isTableEfected() {
@@ -122,8 +120,5 @@ public class Game {
     public void setTableEfected(boolean tableEfected) {
         this.tableEfected = tableEfected;
     }
-    
-    
-    
-    
+
 }

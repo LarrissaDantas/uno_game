@@ -18,7 +18,13 @@ public interface GamePanelEventsInterface {
     
     public void onCardsShared();
     
+    public void onViewUpdate();
+    
     public void userLoggedCulp(Card cardToPlay);
     
     public void machineCulp();
+    
+    public void userCulp(int cardIndex);
+    
+    
 }
