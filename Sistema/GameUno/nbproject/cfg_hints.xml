@@ -5,5 +5,8 @@
         <node name="Imports_UNUSED">
             <attribute name="enabled" value="false"/>
         </node>
+        <node name="EmptyStatements_BLOCK">
+            <attribute name="enabled" value="false"/>
+        </node>
     </tool>
 </configuration>
