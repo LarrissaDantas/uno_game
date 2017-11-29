@@ -19,7 +19,7 @@ public class GamePanel extends javax.swing.JPanel {
 
     private Map<Integer, JLabel[]> hashMapLabelCards = new HashMap<>();
     private JLabel[] timeUserLabel;
-    private int userCardSelecteIndex = -1;
+    private int userCardSelecteIndex = 0;
 
     /**
      * Creates new form GamePanel

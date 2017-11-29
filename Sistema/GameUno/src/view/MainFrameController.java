@@ -7,6 +7,7 @@ package view;
 
 import javax.swing.JPanel;
 import kernel.task.StartTask;
+import kernel.task.TestTask;
 import view.notification.NotificationTime;
 import view.load.LoadInterface;
 import view.load.LoadPanel;
@@ -54,8 +55,8 @@ public class MainFrameController {
             @Override
             public void onLoadComplete() {
                 new Thread(() -> {
-                    //Linha para testes
-                        //new TestTask().executeTasks();
+                    //@Teste
+                    new TestTask().executeTasks();
                 }).start();
                 MainFrameController.setView(new LoadPanel(new LoadInterface() {
                     @Override
