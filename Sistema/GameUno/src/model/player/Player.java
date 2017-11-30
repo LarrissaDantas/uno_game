@@ -17,16 +17,27 @@ public class Player {
     private User user;
     /**
      * No inicio do jogo, para definir qual jogador iniciará a partida cada um recebe uma carta.
-     * Ela será guardada em drawnCard
+     * Ela será guardada em startCard
      */
-    private Card drawnCard;
+    private Card startCard;
     private ArrayList<Card> cardsOnHand;
+    private PlayerType myType;
+    public enum PlayerType{
+        HUMAN,MACHINE
+    }
 
-    public Player(User user) {
+    public Player(User user,PlayerType playerType) {
         this.user = user;
+        this.myType =playerType;
         cardsOnHand = new ArrayList<>();
     }
 
+    public PlayerType getMyType() {
+        return myType;
+    }
+
+    
+    
     public User getUser() {
         return user;
     }
@@ -43,12 +54,12 @@ public class Player {
         cardsOnHand.remove(index);
     }
     
-    public Card getDrawnCard() {
-        return drawnCard;
+    public Card getStartCard() {
+        return startCard;
     }
 
-    public void setDrawnCard(Card drawnCard) {
-        this.drawnCard = drawnCard;
+    public void setStartCard(Card drawnCard) {
+        this.startCard = drawnCard;
     }
  
     

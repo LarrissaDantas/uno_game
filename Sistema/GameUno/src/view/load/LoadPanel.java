@@ -22,7 +22,7 @@ public class LoadPanel extends javax.swing.JPanel {
     public LoadPanel(LoadInterface loadInterface) {
         initComponents();
         
-        //Linha para teste
+        //@Teste
         //lbBack.setVisible(false);
         
         progressBar.setMaximum(AppTaskManager.TASK_MAX_VALUE);

@@ -26,8 +26,8 @@ public class LoginPanelController implements ViewController{
     public LoginPanelController(){
         myView  = new LoginPanel(this);
         
-        //Linha para testes
-        //onBtnLoginClicked("sergioivad", "123456789");
+        //@Teste
+        //onBtnLoginClicked("teste", "12345678");
     }
     /**
      * Responder ao botao de login

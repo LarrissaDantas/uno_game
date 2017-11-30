@@ -48,7 +48,7 @@ public class GameTask implements AppTask{
         }
         
         AppTaskManager.TASK_VALUE = 3;
-        waitMillis(3000);
+        waitMillis(1000);
        
         //TASK 4
         AppTaskManager.TASK_STATUS = "Pronto...";
