@@ -33,7 +33,6 @@ public class MainFrameController {
     }
 
     public static void exitApp() {
-        System.out.println("Saiu");
         System.exit(0);
     }
 

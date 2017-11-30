@@ -5,9 +5,6 @@
  */
 package view.game;
 
-import exception.GameException;
-import model.card.Card;
-
 /**
  *
  * @author sergi
@@ -20,8 +17,6 @@ public interface GamePanelEventsInterface {
     public void onCardsShared();
     
     public void onViewUpdate();
-    
-    public void userLoggedCulp(Card cardToPlay);
     
     public void machineCulp();
     

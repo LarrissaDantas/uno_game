@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.card.Card;
 import model.card.CardModel;
 import model.card.CardType;
@@ -79,7 +77,7 @@ public class GameModel implements GamePanelEventsInterface {
         shareUserCards(players);
 
         //Jogo criado
-        actualGame.setGameStatus(GameStatus.CREATED);
+        updateGameStatus(GameStatus.CREATED);
 
     }
 
@@ -148,7 +146,7 @@ public class GameModel implements GamePanelEventsInterface {
                 //Se doi
                 if (players[i].getStartCard().getCardType().getValue()
                         == players[j].getStartCard().getCardType().getValue()) {
-                    return 0;//Jogador humano (sempre vai estar na posição 0;
+                    return 0;//Jogador humano (sempre vai estar na posição 0);
                 }
             }
         }
@@ -162,21 +160,25 @@ public class GameModel implements GamePanelEventsInterface {
      * @return
      */
     private Player[] generatePlayers() {
+        ArrayList<String> srcUsed = new ArrayList<>();
         //Primeiro player sempre é o usuario loggado
         Player p1 = new Player(UserModel.USER_LOGGED, Player.PlayerType.HUMAN);
-
+        srcUsed.add(p1.getUser().getSrcProfile());
         //Gerar Players Sem IA
         //TODO: Futuramente com IA
         User u2 = new User();
         u2.setName("Maquina 1");
+        u2.setSrcProfile(generateOtherIconSrc(srcUsed));
         Player p2 = new Player(u2, Player.PlayerType.MACHINE);
 
         User u3 = new User();
         u3.setName("Maquina 2");
+        u3.setSrcProfile(generateOtherIconSrc(srcUsed));
         Player p3 = new Player(u3, Player.PlayerType.MACHINE);
 
         User u4 = new User();
         u4.setName("Maquina 3");
+        u4.setSrcProfile(generateOtherIconSrc(srcUsed));
         Player p4 = new Player(u4, Player.PlayerType.MACHINE);
 
         return new Player[]{p1, p2, p3, p4};
@@ -279,17 +281,18 @@ public class GameModel implements GamePanelEventsInterface {
     @Override
     public void onGameViewLoaded() {
         gameEvents.shareStartCards();
+        gameEvents.updateGameStatus(actualGame.getGameStatus());
     }
 
     @Override
     public void onStartCardsShared() {
-        actualGame.setGameStatus(GameStatus.CREATED);
+        updateGameStatus(GameStatus.STARTED);
         gameEvents.distributeCards();
     }
 
     @Override
     public void onCardsShared() {
-        actualGame.setGameStatus(GameStatus.RUNNING);
+        updateGameStatus(GameStatus.RUNNING);
 
         if (getActualPlayer().getMyType() == Player.PlayerType.HUMAN) {
             gameEvents.requestLoggedPlayerCulp();
@@ -300,35 +303,27 @@ public class GameModel implements GamePanelEventsInterface {
     }
 
     @Override
-    public void userLoggedCulp(Card cardToPlay) {
-        //JOGADA DE USUARIO
-
-    }
-
-    @Override
     public void machineCulp() {
         //JOGADA DE IA
-        System.out.println("Machine Culp");
-       
-            //TODO: Verificar se há algum efeito de jogo para ser aplicado
-            //Verificar se a pilha esta vazia para poder jogar
-            if (actualGame.getStackCardPlayed().isEmpty()) {
-                System.out.println("Pilha de jogadas esta vazia");
-                executeCulp(0);
-            } else {
-                executeCulp(0);
-            }
-     
+
+        //TODO: Verificar se há algum efeito de jogo para ser aplicado
+        //Verificar se a pilha esta vazia para poder jogar
+        if (actualGame.getStackCardPlayed().isEmpty()) {
+            System.out.println("Pilha de jogadas esta vazia");
+            executeCulp(0);
+        } else {
+            executeCulp(0);
+        }
+
         gameEvents.culpExecuted();
 
     }
 
     @Override
-    public void userCulp(int cardIndex)  {
+    public void userCulp(int cardIndex) {
         //JOGADA DE USUARIO
-        System.out.println("User Culp");
-        //TODO: Verificar se há algum efeito de jogo para ser aplicado
 
+        //TODO: Verificar se há algum efeito de jogo para ser aplicado
         //Verificar se a pilha esta vazia para poder jogar
         if (actualGame.getStackCardPlayed().isEmpty()) {
             System.out.println("Pilha de jogadas esta vazia");
@@ -347,40 +342,63 @@ public class GameModel implements GamePanelEventsInterface {
             //EXECUTA A PUNICAO E RETIRA O EFEITO DA MESA
             switch (getHeadStackPlayed().getCardType()) {
                 case CANCEL:
+                    gameEvents.refreshPlayerCards(getActualPlayerPosition());
                     changePlayer();
                     actualGame.setTableEfected(false);
-                    System.out.println("Player :"+getActualPlayer().getUser().getName() + " recebeu uma punição de "+getHeadStackPlayed().getCardType().toString());
-                    throw new GameException(" punição de cancelar");
+                    System.out.println("Player :" + getActualPlayer().getUser().getName() + " recebeu uma punição de " + getHeadStackPlayed().getCardType().toString());
+                    throw new GameException(CardType.CANCEL);
                 case PLUS_TWO:
                     plusCardToActualPlayer(2);
+                    gameEvents.refreshPlayerCards(getActualPlayerPosition());
                     changePlayer();
                     actualGame.setTableEfected(false);
-                    System.out.println("Player :"+getActualPlayer().getUser().getName() + " recebeu uma punição de "+getHeadStackPlayed().getCardType().toString());
-                    throw new GameException(" punição de +2");
+                    System.out.println("Player :" + getActualPlayer().getUser().getName() + " recebeu uma punição de " + getHeadStackPlayed().getCardType().toString());
+                    throw new GameException(CardType.PLUS_TWO);
 
                 case PLUS_FOUR:
                     plusCardToActualPlayer(4);
+                    gameEvents.refreshPlayerCards(getActualPlayerPosition());
                     changePlayer();
                     actualGame.setTableEfected(false);
-                    System.out.println("Player :"+getActualPlayer().getUser().getName() + " recebeu uma punição de "+getHeadStackPlayed().getCardType().toString());
-                    throw new GameException(" punição de +4");
+                    System.out.println("Player :" + getActualPlayer().getUser().getName() + " recebeu uma punição de " + getHeadStackPlayed().getCardType().toString());
+                    throw new GameException(CardType.PLUS_FOUR);
             }
+            System.out.println("Fim do fluxo de punição");
 
         }
 
     }
 
     private void executeCulp(int cardIndex) {
-        Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
+        System.out.println("Jogada de :" + getActualPlayer().getUser().getName());
+        if (!getActualPlayer().getCardsOnHand().isEmpty()) {
+            Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
+            if (isPunitionCard(cardToPlay.getCardType())) {
+                actualGame.setTableEfected(true);
+            }
 
-        if (isPunitionCard(cardToPlay.getCardType())) {
-            actualGame.setTableEfected(true);
+            getActualStakCardPlayed().push(cardToPlay);
+            actualGame.setGameActualColor(cardToPlay.getCardColor());
+            getActualPlayer().getCardsOnHand().remove(cardIndex);
+            if (getActualPlayer().getCardsOnHand().isEmpty()) {
+                //Jogador nao possui cartas na mao
+                //Contar pontuação de cada jogador restante
+                int sum = 0;
+                for (int i = 0; i < actualGame.getPlayers().length; i++) {
+                    if (i != getActualPlayerPosition()) {
+                        for (Card card : actualGame.getPlayers()[i].getCardsOnHand()) {
+                            sum += card.getCardType().getValue();
+                        }
+                    }
+                }
+                updateGameStatus(GameStatus.FINALIZED);
+                gameEvents.refreshPlayerCards(getActualPlayerPosition());
+                gameEvents.finalizeGame(sum);
+            } else {
+                gameEvents.refreshPlayerCards(getActualPlayerPosition());
+                changePlayer();
+            }
         }
-
-        getActualStakCardPlayed().push(cardToPlay);
-        actualGame.setGameActualColor(cardToPlay.getCardColor());
-        getActualPlayer().getCardsOnHand().remove(cardIndex);
-        changePlayer();
         /*
         //Testar se é possivel jogar
         if (!actualGame.getStackCardPlayed().isEmpty()) {
@@ -590,9 +608,44 @@ public class GameModel implements GamePanelEventsInterface {
                 gameEvents.requestMachinePlayerCulp(actualGame.getActualPlayerPosition());
             }
         } catch (GameException ex) {
-            gameEvents.culpExecuted();
             System.out.println("Punição na mesa");
+            gameEvents.showAnimationToPunition(ex.getPunitionType());
+            gameEvents.culpExecuted();
         }
+    }
+
+    private String generateOtherIconSrc(ArrayList<String> srcUsed) {
+        String[] srcAvaliable = new String[]{
+            "user_1.png",
+            "user_2.png",
+            "user_3.png",
+            "user_4.png",
+            "user_5.png"
+        };
+        for (String actulSrc : srcAvaliable) {
+            if (!srcUsed.contains(actulSrc)) {
+                srcUsed.add(actulSrc);
+                return actulSrc;
+            }
+        }
+        return null;
+    }
+
+    private void updateGameStatus(GameStatus gameStatus) {
+        actualGame.setGameStatus(gameStatus);
+        try {
+            gameEvents.updateGameStatus(gameStatus);
+        } catch (Exception e) {
+            System.out.println("Interface GameEvents esta nulla no momento");
+        }
+    }
+
+    public void setGameFinalTime(int[] current_time) {
+        actualGame.setGameTime(current_time);
+    }
+
+    public int[] getGameCurrentTime() {
+        return actualGame.getGameTime();
     }
 
 }

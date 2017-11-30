@@ -32,11 +32,21 @@ public class Game {
 
     private int gameFirstPlayerPosition;
     private int actualPlayerPosition;
+    private int[] gameTime;
 
     public GameMode getGameMode() {
         return gameMode;
     }
 
+    public int[] getGameTime() {
+        return gameTime;
+    }
+
+    public void setGameTime(int[] gameTime) {
+        this.gameTime = gameTime;
+    }
+
+    
     public Sense getGameSense() {
         return gameSense;
     }

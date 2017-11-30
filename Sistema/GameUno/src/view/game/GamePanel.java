@@ -8,6 +8,7 @@ package view.game;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -87,18 +88,34 @@ public class GamePanel extends javax.swing.JPanel {
             active_u2,
             active_u3
         });
-
+        //Cartas da pilha de jogadas
         hashMapLabelCards.put(6, new JLabel[]{
             discard_1,
             discard_2,
             discard_3
         });
-
+        //Cartas da pilha que ainda nao foram jogada
         hashMapLabelCards.put(7, new JLabel[]{
             stack_c1,
             stack_c2,
             stack_c3
         });
+        //icone de ativo para cada player
+        hashMapLabelCards.put(8, new JLabel[]{
+            icon_u0,
+            icon_u1,
+            icon_u2,
+            icon_u3
+        });
+        //Label com o nome de cada player
+        hashMapLabelCards.put(9, new JLabel[]{
+            lb_name_u0,
+            lb_name_u1,
+            lb_name_u2,
+            lb_name_u3
+        });
+        
+        //Labels com os tempos de cada jogador
         timeUserLabel = new JLabel[]{
             txt_time_u0,
             txt_time_u1,
@@ -136,6 +153,7 @@ public class GamePanel extends javax.swing.JPanel {
         card_u1_c6 = new javax.swing.JLabel();
         card_u1_start = new javax.swing.JLabel();
         txt_time_u1 = new javax.swing.JLabel();
+        lb_name_u1 = new javax.swing.JLabel();
         jPanel20 = new javax.swing.JPanel();
         btnOut = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
@@ -152,6 +170,7 @@ public class GamePanel extends javax.swing.JPanel {
         card_u2_c6 = new javax.swing.JLabel();
         card_u2_start = new javax.swing.JLabel();
         txt_time_u2 = new javax.swing.JLabel();
+        lb_name_u2 = new javax.swing.JLabel();
         panel = new javax.swing.JPanel();
         panelTable = new javax.swing.JPanel();
         stack_c1 = new javax.swing.JLabel();
@@ -174,6 +193,7 @@ public class GamePanel extends javax.swing.JPanel {
         card_u0_start = new javax.swing.JLabel();
         btnMoreCards = new javax.swing.JLabel();
         txt_time_u0 = new javax.swing.JLabel();
+        lb_name_u0 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         myLabelTime = new javax.swing.JLabel();
@@ -191,6 +211,7 @@ public class GamePanel extends javax.swing.JPanel {
         card_u3_c6 = new javax.swing.JLabel();
         card_u3_start = new javax.swing.JLabel();
         txt_time_u3 = new javax.swing.JLabel();
+        lb_name_u3 = new javax.swing.JLabel();
         jPanel23 = new javax.swing.JPanel();
         btnStart = new javax.swing.JButton();
 
@@ -267,6 +288,11 @@ public class GamePanel extends javax.swing.JPanel {
         txt_time_u1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txt_time_u1.setText("00:05");
         jPanel13.add(txt_time_u1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 70, 20));
+
+        lb_name_u1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        lb_name_u1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lb_name_u1.setText("Usuário");
+        jPanel13.add(lb_name_u1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 150, -1));
 
         jPanel19.add(jPanel13);
 
@@ -357,6 +383,11 @@ public class GamePanel extends javax.swing.JPanel {
         txt_time_u2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txt_time_u2.setText("00:05");
         jPanel10.add(txt_time_u2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 70, 20));
+
+        lb_name_u2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        lb_name_u2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lb_name_u2.setText("Usuário");
+        jPanel10.add(lb_name_u2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 150, -1));
 
         jPanel9.add(jPanel10);
 
@@ -449,6 +480,11 @@ public class GamePanel extends javax.swing.JPanel {
         txt_time_u0.setText("00:05");
         jPanel11.add(txt_time_u0, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 70, 20));
 
+        lb_name_u0.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        lb_name_u0.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lb_name_u0.setText("Usuário");
+        jPanel11.add(lb_name_u0, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 150, -1));
+
         jPanel5.add(jPanel11);
 
         jPanel6.add(jPanel5);
@@ -473,26 +509,22 @@ public class GamePanel extends javax.swing.JPanel {
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel21Layout.createSequentialGroup()
-                .addContainerGap(256, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(23, 23, 23))
             .addGroup(jPanel21Layout.createSequentialGroup()
-                .addGap(262, 262, 262)
-                .addComponent(myLabelTime, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(120, 120, 120)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(myLabelTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
         );
         jPanel21Layout.setVerticalGroup(
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(myLabelTime)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
-
-        myLabelTime.getAccessibleContext().setAccessibleDescription("");
 
         jPanel12.add(jPanel21);
 
@@ -549,6 +581,11 @@ public class GamePanel extends javax.swing.JPanel {
         txt_time_u3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txt_time_u3.setText("00:05");
         jPanel14.add(txt_time_u3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 70, 20));
+
+        lb_name_u3.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        lb_name_u3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lb_name_u3.setText("Usuário");
+        jPanel14.add(lb_name_u3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 150, -1));
 
         jPanel22.add(jPanel14);
 
@@ -655,9 +692,6 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JLabel icon_u2;
     private javax.swing.JLabel icon_u3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -673,6 +707,10 @@ public class GamePanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JLabel lb_name_u0;
+    private javax.swing.JLabel lb_name_u1;
+    private javax.swing.JLabel lb_name_u2;
+    private javax.swing.JLabel lb_name_u3;
     private javax.swing.JLabel myLabelTime;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelTable;
@@ -829,6 +867,10 @@ public class GamePanel extends javax.swing.JPanel {
 
     public int getSelectedUserCard() {
         return userCardSelecteIndex;
+    }
+
+    void showPointsWinner(int sum,String winnerName) {
+        JOptionPane.showMessageDialog(this,"Parabéns "+ winnerName +  "\nPontuação: "+sum,"Vencedor",JOptionPane.PLAIN_MESSAGE);
     }
 
 }

@@ -5,6 +5,8 @@
  */
 package model.game;
 
+import model.card.CardType;
+
 /**
  *
  * @author Bianca
@@ -21,6 +23,13 @@ public interface GameEventsInterface {
     public void requestMachinePlayerCulp(int playerIndex);
     
     public void refreshPlayerCards(int playerIndex);
+
+    public void showAnimationToPunition(CardType type);
+
+
+    public void finalizeGame(int sum);
+
+    public void updateGameStatus(GameStatus gameStatus);
     
    
     
