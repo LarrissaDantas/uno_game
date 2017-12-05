@@ -322,15 +322,7 @@ public class GameModel implements GamePanelEventsInterface {
     @Override
     public void userCulp(int cardIndex) {
         //JOGADA DE USUARIO
-
-        //TODO: Verificar se há algum efeito de jogo para ser aplicado
-        //Verificar se a pilha esta vazia para poder jogar
-        if (actualGame.getStackCardPlayed().isEmpty()) {
-            System.out.println("Pilha de jogadas esta vazia");
-            executeCulp(cardIndex);
-        } else {
-            executeCulp(cardIndex);
-        }
+        executeCulp(cardIndex);
         gameEvents.culpExecuted();
 
     }
@@ -371,15 +363,21 @@ public class GameModel implements GamePanelEventsInterface {
 
     private void executeCulp(int cardIndex) {
         System.out.println("Jogada de :" + getActualPlayer().getUser().getName());
-        if (!getActualPlayer().getCardsOnHand().isEmpty()) {
-            Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
+        Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
+        Card headCard = getHeadStackPlayed();
+        boolean doCulp = false;
+        
+        //Permissoes de jogadas
+        
+        if (doCulp) {
             if (isPunitionCard(cardToPlay.getCardType())) {
                 actualGame.setTableEfected(true);
             }
-
             getActualStakCardPlayed().push(cardToPlay);
             actualGame.setGameActualColor(cardToPlay.getCardColor());
             getActualPlayer().getCardsOnHand().remove(cardIndex);
+            //Aqui verifica se tem apenas uma carta na mão e ativa o botao uno
+            
             if (getActualPlayer().getCardsOnHand().isEmpty()) {
                 //Jogador nao possui cartas na mao
                 //Contar pontuação de cada jogador restante
@@ -398,65 +396,11 @@ public class GameModel implements GamePanelEventsInterface {
                 gameEvents.refreshPlayerCards(getActualPlayerPosition());
                 changePlayer();
             }
-        }
-        /*
-        //Testar se é possivel jogar
-        if (!actualGame.getStackCardPlayed().isEmpty()) {
-            Card headStackPlayed = getHeadStackPlayed();
-
-            //A carta da mao é normal e da mesa tbm
-            if (isNormalCard(cardToPlay.getCardType()) && isNormalCard(headStackPlayed.getCardType())) {
-                //Se elas possuem o mesmo numero ou a mesma cor
-                if (((cardToPlay.getCardType().getValue() == headStackPlayed.getCardType().getValue()))
-                        || cardToPlay.getCardColor().equals(headStackPlayed.getCardColor())) {
-                    //JOGADA
-
-                } else {
-                    //JOGADA RECUSADA
-                }
-                // A carta da mao é normal e a da mesa é um joker ou um +4
-            } else if (isNormalCard(cardToPlay.getCardType()) && ((headStackPlayed.getCardType().equals(CardType.JOKER)) || (headStackPlayed.getCardType().equals(CardType.PLUS_FOUR)))) {//CARTA JOGADA FOR NORMAL E A  DA MESA FOR UM JOKER
-                //Se for a mesma cor definida no jogo
-                if (cardToPlay.getCardColor().equals(actualGame.getGameActualColor())) {
-                    //JOGADA
-                } else {
-                    //JOGADA RECUSADA
-                }
-                //A carta da mao é normal e a da mesa é uma carta de efeito 
-            } else if (isNormalCard(cardToPlay.getCardType()) && (isEfectCard(headStackPlayed.getCardType()))) {
-                //Se elas possuem a mesma cor
-                if (cardToPlay.getCardColor().equals(headStackPlayed.getCardColor())) {
-                    //JOGADA
-                } else {
-                    //JOGADA RECUSADA
-                }
-                //A carta da mao é especial e a da mesa é normal
-            } else if (isEspecialCard(cardToPlay.getCardType()) && isNormalCard(headStackPlayed.getCardType())) {
-                if (isEfectCard(cardToPlay.getCardType())) {
-                    //Se for de efeito, testa apenas a cor 
-                    if (cardToPlay.getCardColor().equals(headStackPlayed.getCardColor())) {
-                        //JOGADA
-                    } else {
-                        //JOGADA RECUSDA 
-                    }
-                } else {
-                    //è um JOKER ou +4
-
-                    //JOGADA
-                }
-                //A carta da mao é de efeito e da mesa tbm
-            } else {
-                //JOGADA RECUSADA
-            }
-            //Nao existe carta na mesa
         } else {
-            //Pode Jogar quaquer carta 
-            getActualStakCardPlayed().push(cardToPlay);
-            actualGame.setGameActualColor(cardToPlay.getCardColor());
-            changePlayer();
-
+            if (getActualPlayerPosition() == 0) {//Apenas para o jogador logado
+                gameEvents.showCulpRefused();
+            }
         }
-         */
     }
 
     private boolean isNormalCard(CardType cardType) {
@@ -636,7 +580,7 @@ public class GameModel implements GamePanelEventsInterface {
         try {
             gameEvents.updateGameStatus(gameStatus);
         } catch (Exception e) {
-            System.out.println("Interface GameEvents esta nulla no momento");
+            System.out.println("Interface GameEvents esta null no momento");
         }
     }
 
@@ -652,6 +596,10 @@ public class GameModel implements GamePanelEventsInterface {
         getGamePlayers()[i].getCardsOnHand().add(getActualStakCard().pop());
         changePlayer();
         gameEvents.culpExecuted();
+    }
+
+    public void updateGameSide(Sense sense) {
+        actualGame.setGameSense(sense);
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import model.card.Card;
 import model.card.CardType;
+import model.game.Game;
 import model.game.GameModel;
 import util.AppLog;
 import view.MainFrameController;
@@ -342,6 +343,18 @@ public class GamePanelController implements ViewController, GameEventsInterface 
     @Override
     public void refreshStacks() {
         refreshStacksGame();
+    }
+
+    @Override
+    public void requestNewGameSide() {
+        //Mostrar o panel para escolher lado do jogo
+        System.out.println("Mudou o lado do jogo para: " + "LEFT");
+        gameModel.updateGameSide(Game.Sense.LEFT);
+    }
+
+    @Override
+    public void showCulpRefused() {
+        MainFrameController.shootNotification(NotificationType.WARNING, "Carta recusada", NotificationTime.MEDIUM);
     }
 
 }
