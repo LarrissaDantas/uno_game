@@ -594,7 +594,7 @@ public class GameModel implements GamePanelEventsInterface {
         }
     }
 
-    private Stack<Card> getActualStakCardPlayed() {
+    public Stack<Card> getActualStakCardPlayed() {
         return actualGame.getStackCardPlayed();
     }
 
@@ -646,6 +646,12 @@ public class GameModel implements GamePanelEventsInterface {
 
     public int[] getGameCurrentTime() {
         return actualGame.getGameTime();
+    }
+
+    public void popStackCardForUser(int i) {
+        getGamePlayers()[i].getCardsOnHand().add(getActualStakCard().pop());
+        changePlayer();
+        gameEvents.culpExecuted();
     }
 
 }

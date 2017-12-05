@@ -30,6 +30,8 @@ public interface GameEventsInterface {
     public void finalizeGame(int sum);
 
     public void updateGameStatus(GameStatus gameStatus);
+
+    public void refreshStacks();
     
    
     

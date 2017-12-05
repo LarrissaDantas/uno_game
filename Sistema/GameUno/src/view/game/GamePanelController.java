@@ -19,6 +19,8 @@ import model.game.GameEventsInterface;
 import model.game.GameStatus;
 
 import view.menu.MenuPanelController;
+import view.notification.NotificationTime;
+import view.notification.NotificationType;
 
 /**
  *
@@ -29,9 +31,10 @@ public class GamePanelController implements ViewController, GameEventsInterface 
     private GamePanel myView;
     private GameModel gameModel = GameModel.myInstance();
     private GameStatus actualGameStatus;
-    private final int MAX_TIME_TO_CULP = 5;
+    private final int MAX_TIME_TO_CULP = 8;
 
     private boolean userClickedOnCard = false;
+    private boolean userPopStackCard = false;
 
     public GamePanelController() {
         gameModel.setGameStatusInterface(this);
@@ -65,6 +68,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                 AppLog.error("Erro ao atribuir carta de inicio: " + scrUserCard + " E:" + e.getMessage());
             }
         }
+        MainFrameController.shootNotification(NotificationType.SUCCESS, "Inicie o jogo!", NotificationTime.MEDIUM);
         refreshActiveActualUser();
         myView.showStartButton();
     }
@@ -78,7 +82,9 @@ public class GamePanelController implements ViewController, GameEventsInterface 
     @Override
     public void refreshPlayerCards(int userIndex) {
         myView.setInvisibleUserCardsLabel(userIndex);//Desabilitar todas, antes de atualizar
-        for (int i = 0; i < gameModel.getGamePlayers()[userIndex].getCardsOnHand().size(); i++) {
+        refreshPlayerCardsCount(userIndex);
+        int cardsCount = gameModel.getGamePlayers()[userIndex].getCardsOnHand().size();
+        for (int i = 0; i < cardsCount; i++) {
             if (userIndex == 0) {//Apenas para o usuario Logado
                 if (i < 7) {
                     String srcImg = gameModel.getGamePlayers()[userIndex].getCardsOnHand().get(i).getIconSRC();
@@ -86,6 +92,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                     //Atribuir o click para cada label
                     myView.getLabels(userIndex)[i].setName(String.valueOf(i));
                     myView.getLabels(userIndex)[i].addMouseListener(new MouseAdapter() {
+                        @Override
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                             myView.onUserLabelCardClicked(evt);
                         }
@@ -150,7 +157,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                     setUserLoggedCardsEnable(true);
                     myView.setTimePlayerVisible(0, true);
                     myView.updateTimeForUser(0, MAX_TIME_TO_CULP);
-                    while (time_remaining > 0 && !userClickedOnCard) {
+                    while (time_remaining > 0 && !userClickedOnCard && !userPopStackCard) {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {
@@ -161,12 +168,13 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                     }
                     myView.setTimePlayerVisible(0, false);
                     setUserLoggedCardsEnable(false);
-
-                    gameModel.userCulp(myView.getSelectedUserCard());
-
-                    userClickedOnCard = false;
-                    myView.setUserCardSelectedIndex(0);
-
+                    if (!userPopStackCard) {
+                        gameModel.userCulp(myView.getSelectedUserCard());
+                        userClickedOnCard = false;
+                        myView.setUserCardSelectedIndex(0);
+                    } else {
+                        userPopStackCard = false;
+                    }
                     Thread.currentThread().interrupt();
                 }
             }
@@ -191,12 +199,12 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                     myView.setTimePlayerVisible(machinePlayerIndex, true);
                     myView.updateTimeForUser(machinePlayerIndex, MAX_TIME_TO_CULP);
                     while (time_remaining > 0) {
-                        if (time_remaining == 2) {//Com alguns segundos à IA joga
+                        if (time_remaining == 5) {//Com alguns segundos à IA joga
                             myView.setTimePlayerVisible(machinePlayerIndex, false);
                             gameModel.machineCulp();
                             //refreshPlayerCards(machinePlayerIndex);
                             Thread.currentThread().interrupt();
-                            
+
                             return;
 
                         }
@@ -218,6 +226,12 @@ public class GamePanelController implements ViewController, GameEventsInterface 
         //Atualizar labels para as cartas jogadas
         Card[] cards_played = gameModel.getCountCardsStackPlayed(3);
         myView.setStackPlayedVisible(false);
+        if (cards_played[0] != null) {
+            myView.getLabels(11)[1].setVisible(true);
+            myView.getLabels(11)[1].setText(String.valueOf(gameModel.getActualStakCardPlayed().size()));
+        } else {
+            myView.getLabels(11)[1].setVisible(false);
+        }
         for (int i = 0; i < cards_played.length; i++) {
             try {
                 String scrIconCard = cards_played[i].getIconSRC();
@@ -229,8 +243,14 @@ public class GamePanelController implements ViewController, GameEventsInterface 
         }
         //Atualizar labels daas cartas que ainda nao foram jogadas
         Card[] cards_not_played = gameModel.getCountCardsStack(3);
+        if (cards_not_played[0] != null) {
+            myView.getLabels(11)[0].setVisible(true);
+            myView.getLabels(11)[0].setText(String.valueOf(gameModel.getActualStakCard().size()));
+        } else {
+            myView.getLabels(11)[0].setVisible(false);
+        }
         myView.setStartCardVisible(false);
-        for (int i = 0; i < cards_played.length; i++) {
+        for (int i = 0; i < cards_not_played.length; i++) {
             try {
                 myView.getLabels(7)[i].setVisible(true);
             } catch (Exception e) {
@@ -257,6 +277,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                         for (int j = 0; j < 7; j++) {
                             try {
                                 myView.getLabels(i)[j].setVisible(true);
+                                refreshPlayerCardsCount(i);
                                 Thread.sleep(150);
                             } catch (Exception e) {
                                 System.out.println("Erro ao atribuir carta");
@@ -298,6 +319,29 @@ public class GamePanelController implements ViewController, GameEventsInterface 
     @Override
     public void updateGameStatus(GameStatus gameStatus) {
         this.actualGameStatus = gameStatus;
+    }
+
+    private void refreshPlayerCardsCount(int userIndex) {
+        int cardsCount = gameModel.getGamePlayers()[userIndex].getCardsOnHand().size();
+        if (cardsCount > 0) {
+            myView.getLabels(10)[userIndex].setVisible(cardsCount > 0);
+            myView.getLabels(10)[userIndex].setText(String.valueOf(cardsCount));
+        } else {
+            myView.getLabels(10)[userIndex].setVisible(false);
+        }
+    }
+
+    void onClickedStackCards() {
+        if (gameModel.getActualPlayerPosition() == 0) {
+            userPopStackCard = true;
+            gameModel.popStackCardForUser(0);
+            refreshPlayerCardsCount(0);
+        }
+    }
+
+    @Override
+    public void refreshStacks() {
+        refreshStacksGame();
     }
 
 }
