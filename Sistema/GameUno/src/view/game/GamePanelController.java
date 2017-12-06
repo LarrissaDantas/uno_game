@@ -35,7 +35,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
     private final int MAX_TIME_TO_CULP = 8;
 
     private boolean userClickedOnCard = false;
-    private boolean userPopStackCard = false;
+    private boolean gamePaused = false;
 
     public GamePanelController() {
         gameModel.setGameStatusInterface(this);
@@ -158,7 +158,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                     setUserLoggedCardsEnable(true);
                     myView.setTimePlayerVisible(0, true);
                     myView.updateTimeForUser(0, MAX_TIME_TO_CULP);
-                    while (time_remaining > 0 && !userClickedOnCard && !userPopStackCard) {
+                    while (time_remaining > 0 && !userClickedOnCard && !gamePaused) {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ex) {
@@ -169,12 +169,12 @@ public class GamePanelController implements ViewController, GameEventsInterface 
                     }
                     myView.setTimePlayerVisible(0, false);
                     setUserLoggedCardsEnable(false);
-                    if (!userPopStackCard) {
+                    if (!gamePaused) {
                         gameModel.userCulp(myView.getSelectedUserCard());
                         userClickedOnCard = false;
                         myView.setUserCardSelectedIndex(0);
                     } else {
-                        userPopStackCard = false;
+                        gamePaused = false;
                     }
                     Thread.currentThread().interrupt();
                 }
@@ -298,6 +298,11 @@ public class GamePanelController implements ViewController, GameEventsInterface 
 
     @Override
     public void showAnimationToPunition(CardType type) {
+        switch(type){
+            case REVERSES:
+                MainFrameController.shootNotification(NotificationType.WARNING, "O jogo mudou de direção, fique atento!", NotificationTime.SHORT);
+                break;
+        }
         System.out.println("Animacao para efeito");
     }
 
@@ -334,9 +339,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
 
     void onClickedStackCards() {
         if (gameModel.getActualPlayerPosition() == 0) {
-            userPopStackCard = true;
             gameModel.popStackCardForUser(0);
-            refreshPlayerCardsCount(0);
         }
     }
 

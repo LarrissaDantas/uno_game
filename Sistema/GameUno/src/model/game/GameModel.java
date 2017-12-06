@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
 import model.card.Card;
+import model.card.CardColor;
 import model.card.CardModel;
 import model.card.CardType;
 import model.game.Game.Sense;
@@ -305,16 +306,7 @@ public class GameModel implements GamePanelEventsInterface {
     @Override
     public void machineCulp() {
         //JOGADA DE IA
-
-        //TODO: Verificar se há algum efeito de jogo para ser aplicado
-        //Verificar se a pilha esta vazia para poder jogar
-        if (actualGame.getStackCardPlayed().isEmpty()) {
-            System.out.println("Pilha de jogadas esta vazia");
-            executeCulp(0);
-        } else {
-            executeCulp(0);
-        }
-
+        executeCulp(0);
         gameEvents.culpExecuted();
 
     }
@@ -366,18 +358,60 @@ public class GameModel implements GamePanelEventsInterface {
         Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
         Card headCard = getHeadStackPlayed();
         boolean doCulp = false;
-        
         //Permissoes de jogadas
-        
+        if (headCard != null) {
+            System.out.println("Cor atual do jogo: " + actualGame.getGameActualColor().toString());
+            if (((isNormalCard(cardToPlay.getCardType()) && isNormalCard(headCard.getCardType()))
+                    || ((isNormalCard(cardToPlay.getCardType())) && (isEfectCard(headCard.getCardType()))))
+                    || ((isNormalCard(headCard.getCardType())) && (isEfectCard(cardToPlay.getCardType())))
+                    || ((isNormalCard(cardToPlay.getCardType())) && (isJokerCard(headCard.getCardType())))) {
+                //Testa a cor ou  numero
+                if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))
+                        || (cardToPlay.getCardType().getValue() == headCard.getCardType().getValue())) {
+                    //Faça a jogada
+                    doCulp = true;
+                }
+            } else if ((isEfectCard(cardToPlay.getCardType()) && isEfectCard(headCard.getCardType()))) {
+                if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))
+                        || (cardToPlay.getCardType().getValue() == headCard.getCardType().getValue())) {
+                    if ((!cardToPlay.getCardType().equals(CardType.PLUS_TWO) && !headCard.getCardType().equals(CardType.PLUS_TWO) || !actualGame.isTableEfected())) {
+                        //Faça a jogada
+                        doCulp = true;
+                    }
+                }
+            } else if ((isEfectCard(cardToPlay.getCardType()) && isJokerCard(headCard.getCardType()))) {
+                if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))) {
+                    //Faça a jogada
+                    doCulp = true;
+                }
+            } else if ((isEfectCard(headCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))
+                    || (isNormalCard(headCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))) {
+                doCulp = true;
+            }
+        } else {
+            doCulp = true;
+        }
         if (doCulp) {
             if (isPunitionCard(cardToPlay.getCardType())) {
                 actualGame.setTableEfected(true);
             }
+            if(cardToPlay.getCardType().equals(CardType.REVERSES)){
+                gameEvents.showAnimationToPunition(CardType.REVERSES);
+                if(actualGame.getGameSense().equals(Sense.RIGTH)){
+                    actualGame.setGameSense(Sense.LEFT);
+                }else{
+                    actualGame.setGameSense(Sense.RIGTH);
+                }
+            }
             getActualStakCardPlayed().push(cardToPlay);
-            actualGame.setGameActualColor(cardToPlay.getCardColor());
+            if (isNormalCard(cardToPlay.getCardType()) || isEfectCard(cardToPlay.getCardType())) {
+                actualGame.setGameActualColor(cardToPlay.getCardColor());
+            } else {
+                actualGame.setGameActualColor(CardColor.BLUE);
+            }
             getActualPlayer().getCardsOnHand().remove(cardIndex);
             //Aqui verifica se tem apenas uma carta na mão e ativa o botao uno
-            
+
             if (getActualPlayer().getCardsOnHand().isEmpty()) {
                 //Jogador nao possui cartas na mao
                 //Contar pontuação de cada jogador restante
@@ -400,6 +434,7 @@ public class GameModel implements GamePanelEventsInterface {
             if (getActualPlayerPosition() == 0) {//Apenas para o jogador logado
                 gameEvents.showCulpRefused();
             }
+            changePlayer();
         }
     }
 
@@ -447,11 +482,24 @@ public class GameModel implements GamePanelEventsInterface {
         }
     }
 
-    private boolean isEfectCard(CardType cardType) {
+    private boolean isJokerCard(CardType cardType) {
         switch (cardType) {
-            case REVERSES:
+            case PLUS_FOUR:
                 return true;
             case JOKER:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean isEfectCard(CardType cardType) {
+        switch (cardType) {
+            case PLUS_TWO:
+                return true;
+            case CANCEL:
+                return true;
+            case REVERSES:
                 return true;
             default:
                 return false;
@@ -594,8 +642,7 @@ public class GameModel implements GamePanelEventsInterface {
 
     public void popStackCardForUser(int i) {
         getGamePlayers()[i].getCardsOnHand().add(getActualStakCard().pop());
-        changePlayer();
-        gameEvents.culpExecuted();
+        gameEvents.refreshPlayerCards(getActualPlayerPosition());
     }
 
     public void updateGameSide(Sense sense) {
