@@ -90,7 +90,7 @@ public class GamePanelController implements ViewController, GameEventsInterface 
         refreshPlayerCardsCount(userIndex);
         int cardsCount = gameModel.getGamePlayers()[userIndex].getCardsOnHand().size();
         for (int i = 0; i < cardsCount; i++) {
-            if (userIndex >= 0) {//Apenas para o usuario Logado
+            if (userIndex == 0) {//Apenas para o usuario Logado
                 if (i < 7) {
                     myView.setVisibleBtnMoreCards(false);
                     String srcImg = gameModel.getGamePlayers()[userIndex].getCardsOnHand().get(i).getIconSRC();
