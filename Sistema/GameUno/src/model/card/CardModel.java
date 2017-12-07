@@ -49,14 +49,6 @@ public class CardModel {
         
         //Gerar cartas especiais
         generateEspecialCards();
-        
-        
-        
-//        System.out.println(blueCardList);
-//        System.out.println(greenCardList);
-//        System.out.println(yellowCardList);
-//        System.out.println(redCardList);
-//        System.out.println(especialCardList);
 
     newStack.addAll(redCardList);
     newStack.addAll(greenCardList);

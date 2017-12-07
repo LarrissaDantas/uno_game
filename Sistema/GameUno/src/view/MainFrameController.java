@@ -32,7 +32,6 @@ public class MainFrameController {
     }
 
     public static void exitApp() {
-        System.out.println("Saiu");
         System.exit(0);
     }
 
@@ -54,8 +53,8 @@ public class MainFrameController {
             @Override
             public void onLoadComplete() {
                 new Thread(() -> {
-                    //Linha para testes
-                        //new TestTask().executeTasks();
+                    //@Teste
+                    //new TestTask().executeTasks();
                 }).start();
                 MainFrameController.setView(new LoadPanel(new LoadInterface() {
                     @Override
@@ -77,7 +76,6 @@ public class MainFrameController {
         view.setVisible(true);
         mainFrame.setContentPane(view);
         mainFrame.revalidate();
-        System.out.println("Visible for user: "+mainFrame.getContentPane().isShowing());
     }
 
     public static void startNoContentFrame(){
