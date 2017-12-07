@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import model.card.Card;
 import model.card.CardColor;
-import model.card.CardType;
 import model.game.GameModel;
 import util.AppLog;
 import view.MainFrameController;

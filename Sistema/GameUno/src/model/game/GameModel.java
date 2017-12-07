@@ -321,7 +321,8 @@ public class GameModel implements GamePanelEventsInterface {
     public void machineCulp() {
         try {
             //JOGADA DE IA
-            executeCulp(0);
+            int cardIndex = resolveMachineCard();
+            executeCulp(cardIndex);
             gameEvents.culpExecuted();
         } catch (GameException ex) {
             System.out.println(ex.getMessage());
@@ -710,6 +711,54 @@ public class GameModel implements GamePanelEventsInterface {
             gameEvents.refreshPlayerCards(getActualPlayerPosition());
             changePlayer();
         }
+    }
+
+    private int resolveMachineCard() {
+        Card tableCard = getHeadStackPlayed();
+        for (int i = 0; i < getActualPlayer().getCardsOnHand().size(); i++) {
+            Card actual = getActualPlayer().getCardsOnHand().get(i);
+            if (culpIsPossible(actual, tableCard)) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private boolean culpIsPossible(Card cardToPlay, Card tableCard) {
+        boolean doCulp = false;
+        //Permissoes de jogadas
+        if (tableCard != null) {
+            if (((isNormalCard(cardToPlay.getCardType()) && isNormalCard(tableCard.getCardType()))
+                    || ((isNormalCard(cardToPlay.getCardType())) && (isEfectCard(tableCard.getCardType()))))
+                    || ((isNormalCard(tableCard.getCardType())) && (isEfectCard(cardToPlay.getCardType())))
+                    || ((isNormalCard(cardToPlay.getCardType())) && (isJokerCard(tableCard.getCardType())))) {
+                //Testa a cor ou  numero
+                if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))
+                        || (cardToPlay.getCardType().getValue() == tableCard.getCardType().getValue())) {
+                    //Faça a jogada
+                    doCulp = true;
+                }
+            } else if ((isEfectCard(cardToPlay.getCardType()) && isEfectCard(tableCard.getCardType()))) {
+                if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))
+                        || (cardToPlay.getCardType().equals(tableCard.getCardType()))) {
+                    if ((!cardToPlay.getCardType().equals(CardType.PLUS_TWO) && !tableCard.getCardType().equals(CardType.PLUS_TWO) || !actualGame.isTableEfected())) {
+                        //Faça a jogada
+                        doCulp = true;
+                    }
+                }
+            } else if ((isEfectCard(cardToPlay.getCardType()) && isJokerCard(tableCard.getCardType()))) {
+                if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))) {
+                    //Faça a jogada
+                    doCulp = true;
+                }
+            } else if ((isEfectCard(tableCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))
+                    || (isNormalCard(tableCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))) {
+                doCulp = true;
+            }
+        } else {
+            doCulp = true;
+        }
+        return doCulp;
     }
 
 }
