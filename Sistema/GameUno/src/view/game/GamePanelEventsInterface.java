@@ -5,6 +5,8 @@
  */
 package view.game;
 
+import model.card.CardColor;
+
 /**
  *
  * @author sergi
@@ -20,7 +22,11 @@ public interface GamePanelEventsInterface {
     
     public void machineCulp();
     
+    public void skipCulp();
+    
     public void userCulp(int cardIndex);
+    
+    public void onUserSelectedNewColor(CardColor c);
     
     
 }

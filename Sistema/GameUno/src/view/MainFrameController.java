@@ -53,7 +53,6 @@ public class MainFrameController {
             @Override
             public void onLoadComplete() {
                 new Thread(() -> {
-                    //@Teste
                     //new TestTask().executeTasks();
                 }).start();
                 MainFrameController.setView(new LoadPanel(new LoadInterface() {
