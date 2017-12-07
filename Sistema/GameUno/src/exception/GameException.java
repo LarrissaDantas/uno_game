@@ -5,32 +5,39 @@
  */
 package exception;
 
-import model.card.CardType;
+import model.game.GamePunition;
 
 /**
  *
  * @author sdteotonio
  */
 public class GameException extends Exception {
-    private CardType myPunitionType;
+
+    private GamePunition myPunitionType;
+
     /**
      * Creates a new instance of <code>GameException</code> without detail
      * message.
      */
     public GameException() {
     }
-    
+
+    public GameException(String msg) {
+        super(msg);
+    }
+
     /**
      * Constructs an instance of <code>GameException</code> with the specified
      * detail message.
      *
      * @param msg the detail message.
      */
-    public GameException(CardType cardType) {
-        super(cardType.toString());
-        this.myPunitionType =cardType;
+    public GameException(GamePunition gamePunition) {
+        super(gamePunition.toString());
+        this.myPunitionType = gamePunition;
     }
-    public CardType getPunitionType(){
+
+    public GamePunition getPunitionType() {
         return myPunitionType;
     }
 }

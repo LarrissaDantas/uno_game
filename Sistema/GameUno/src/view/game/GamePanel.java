@@ -5,10 +5,13 @@
  */
 package view.game;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import model.card.CardColor;
 import view.notification.NotificationEventsInterface;
 import view.notification.NotificationManagerInterface;
 import view.notification.NotificationTime;
@@ -33,6 +36,12 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
     private GamePanel() {
         initComponents();
 
+    }
+    public boolean panelColorIsVisible(){
+        return panelColors.isVisible();
+    }
+    public void switchActualGameColorPanelBackground(Color color) {
+        actualGameColorPanel.setBackground(color);
     }
 
     public GamePanel(GamePanelController controller) {
@@ -193,6 +202,11 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         quant_cards_u2 = new javax.swing.JLabel();
         panel = new javax.swing.JPanel();
         panelTable = new javax.swing.JPanel();
+        panelColors = new javax.swing.JPanel();
+        green = new javax.swing.JPanel();
+        blue2 = new javax.swing.JPanel();
+        red = new javax.swing.JPanel();
+        yellow1 = new javax.swing.JPanel();
         stack_c1 = new javax.swing.JLabel();
         stack_c2 = new javax.swing.JLabel();
         stack_c3 = new javax.swing.JLabel();
@@ -201,6 +215,7 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         discard_3 = new javax.swing.JLabel();
         quant_cards_stack_played = new javax.swing.JLabel();
         quant_cards_stack = new javax.swing.JLabel();
+        actualGameColorPanel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         icon_u0 = new javax.swing.JLabel();
@@ -245,8 +260,6 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel18.setBackground(new java.awt.Color(204, 255, 255));
-
-        notificationPanel.setLayout(new javax.swing.BoxLayout(notificationPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -445,6 +458,94 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         panelTable.setPreferredSize(new java.awt.Dimension(300, 200));
         panelTable.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        panelColors.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        green.setBackground(Color.GREEN);
+        green.setName("green"); // NOI18N
+        green.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickColor(evt);
+            }
+        });
+
+        javax.swing.GroupLayout greenLayout = new javax.swing.GroupLayout(green);
+        green.setLayout(greenLayout);
+        greenLayout.setHorizontalGroup(
+            greenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        greenLayout.setVerticalGroup(
+            greenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        panelColors.add(green, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 40, 40));
+
+        blue2.setBackground(Color.BLUE);
+        blue2.setName("blue"); // NOI18N
+        blue2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickColor(evt);
+            }
+        });
+
+        javax.swing.GroupLayout blue2Layout = new javax.swing.GroupLayout(blue2);
+        blue2.setLayout(blue2Layout);
+        blue2Layout.setHorizontalGroup(
+            blue2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        blue2Layout.setVerticalGroup(
+            blue2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        panelColors.add(blue2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 40, 40));
+
+        red.setBackground(Color.RED);
+        red.setName("red"); // NOI18N
+        red.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickColor(evt);
+            }
+        });
+
+        javax.swing.GroupLayout redLayout = new javax.swing.GroupLayout(red);
+        red.setLayout(redLayout);
+        redLayout.setHorizontalGroup(
+            redLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        redLayout.setVerticalGroup(
+            redLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        panelColors.add(red, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, 40, 40));
+
+        yellow1.setBackground(Color.YELLOW);
+        yellow1.setName("yellow"); // NOI18N
+        yellow1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickColor(evt);
+            }
+        });
+
+        javax.swing.GroupLayout yellow1Layout = new javax.swing.GroupLayout(yellow1);
+        yellow1.setLayout(yellow1Layout);
+        yellow1Layout.setHorizontalGroup(
+            yellow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        yellow1Layout.setVerticalGroup(
+            yellow1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        panelColors.add(yellow1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 40, 40));
+
+        panelTable.add(panelColors, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 270, 80));
+
         stack_c1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas.png"))); // NOI18N
         stack_c1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -479,6 +580,21 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         quant_cards_stack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/cartas/costas_min.png"))); // NOI18N
         quant_cards_stack.setText("0");
         panelTable.add(quant_cards_stack, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, -1, -1));
+
+        actualGameColorPanel.setBackground(new java.awt.Color(204, 255, 255));
+
+        javax.swing.GroupLayout actualGameColorPanelLayout = new javax.swing.GroupLayout(actualGameColorPanel);
+        actualGameColorPanel.setLayout(actualGameColorPanelLayout);
+        actualGameColorPanelLayout.setHorizontalGroup(
+            actualGameColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 280, Short.MAX_VALUE)
+        );
+        actualGameColorPanelLayout.setVerticalGroup(
+            actualGameColorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        panelTable.add(actualGameColorPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 280, 10));
 
         panel.add(panelTable);
 
@@ -709,12 +825,33 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         // TODO add your handling code here:
         controller.onClickedStackCards();
     }//GEN-LAST:event_stack_c1MouseClicked
+
+    private void clickColor(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickColor
+
+        // TODO add your handling code here:
+        JPanel panelClicked = (JPanel) evt.getComponent();
+        switch (panelClicked.getName()) {
+            case "blue":
+                controller.setSelectedNewGameColor(CardColor.BLUE);
+                break;
+            case "red":
+                controller.setSelectedNewGameColor(CardColor.RED);
+                break;
+            case "green":
+                controller.setSelectedNewGameColor(CardColor.GREEN);
+                break;
+            case "yellow":
+                controller.setSelectedNewGameColor(CardColor.YELLOW);
+                break;
+        }
+        setPanelColorsVisible(false);
+    }//GEN-LAST:event_clickColor
     public void onUserLabelCardClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         JLabel labelClicked = (JLabel) evt.getComponent();
         if (labelClicked.isEnabled()) {
             userCardSelecteIndex = Integer.parseInt(labelClicked.getName());
-            controller.executeInstantUserCulp(true);
+            controller.executeInstantUserCulp();
         }
     }
 
@@ -727,6 +864,8 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
     private javax.swing.JLabel active_u1;
     private javax.swing.JLabel active_u2;
     private javax.swing.JLabel active_u3;
+    private javax.swing.JPanel actualGameColorPanel;
+    private javax.swing.JPanel blue2;
     private javax.swing.JLabel btnMoreCards;
     private javax.swing.JButton btnOut;
     private javax.swing.JButton btnStart;
@@ -765,6 +904,7 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
     private javax.swing.JLabel discard_1;
     private javax.swing.JLabel discard_2;
     private javax.swing.JLabel discard_3;
+    private javax.swing.JPanel green;
     private javax.swing.JLabel icon_u0;
     private javax.swing.JLabel icon_u1;
     private javax.swing.JLabel icon_u2;
@@ -792,6 +932,7 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
     private javax.swing.JLabel myLabelTime;
     private view.notification.NotificationPanel notificationPanel;
     private javax.swing.JPanel panel;
+    private javax.swing.JPanel panelColors;
     private javax.swing.JPanel panelTable;
     private javax.swing.JLabel quant_cards_stack;
     private javax.swing.JLabel quant_cards_stack_played;
@@ -799,6 +940,7 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
     private javax.swing.JLabel quant_cards_u1;
     private javax.swing.JLabel quant_cards_u2;
     private javax.swing.JLabel quant_cards_u3;
+    private javax.swing.JPanel red;
     private javax.swing.JLabel stack_c1;
     private javax.swing.JLabel stack_c2;
     private javax.swing.JLabel stack_c3;
@@ -806,6 +948,7 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
     private javax.swing.JLabel txt_time_u1;
     private javax.swing.JLabel txt_time_u2;
     private javax.swing.JLabel txt_time_u3;
+    private javax.swing.JPanel yellow1;
     // End of variables declaration//GEN-END:variables
 
     private void disableLabel() {
@@ -871,6 +1014,7 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         quant_cards_stack.setVisible(false);
         quant_cards_stack_played.setVisible(false);
 
+        panelColors.setVisible(false);
     }
 
     public void showStartButton() {
@@ -966,6 +1110,10 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
         JOptionPane.showMessageDialog(this, "Parabéns " + winnerName + "\nPontuação: " + sum, "Vencedor", JOptionPane.PLAIN_MESSAGE);
     }
 
+    public void setVisibleBtnMoreCards(boolean b) {
+        btnMoreCards.setVisible(b);
+    }
+
     @Override
     public void notify(NotificationType notificationType, String message, NotificationTime time) {
         Notification notification = new Notification(notificationType, message);
@@ -975,6 +1123,10 @@ public class GamePanel extends javax.swing.JPanel implements NotificationManager
                 notificationPanel.clearPanel();
             }
         }, time);
+    }
+
+    void setPanelColorsVisible(boolean b) {
+        this.panelColors.setVisible(b);
     }
 
 }

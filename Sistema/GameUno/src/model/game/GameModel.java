@@ -32,6 +32,7 @@ public class GameModel implements GamePanelEventsInterface {
     private GameEventsInterface gameEvents;
 
     private static GameModel myInstaModel;
+    private int indexCardAux;
 
     private GameModel() {
     }
@@ -75,7 +76,7 @@ public class GameModel implements GamePanelEventsInterface {
         actualGame.setActualPlayerPosition(actualGame.getFirstPlayerPosition());
 
         //Distribui as cartas
-        shareUserCards(players);
+        shareCards(players);
 
         //Jogo criado
         updateGameStatus(GameStatus.CREATED);
@@ -192,12 +193,25 @@ public class GameModel implements GamePanelEventsInterface {
      *
      * @param players
      */
-    private void shareUserCards(Player[] players) {
-        for (int i = 0; i < players.length; i++) {
+    private void shareCards(Player[] players) {
+        for (int i = 0; i < players.length; i++) {;
             for (int j = 0; j < 7; j++) {
                 players[i].addCardsOnHand(popStackGame());
             }
         }
+
+//        //Simulação
+//        players[0].getCardsOnHand().add(new Card(CardType.ONE, CardColor.YELLOW,"images/cartas/amarela/1.png"));
+//        players[0].getCardsOnHand().add(new Card(CardType.CANCEL, CardColor.YELLOW,"images/cartas/amarela/CANCEL.png"));
+//        
+//        players[1].getCardsOnHand().add(new Card(CardType.PLUS_TWO, CardColor.YELLOW,"images/cartas/amarela/PLUS_TWO.png"));
+//        players[1].getCardsOnHand().add(new Card(CardType.REVERSES, CardColor.BLUE,"images/cartas/azul/REVERSES.png"));
+//
+//        players[2].getCardsOnHand().add(new Card(CardType.CANCEL, CardColor.RED,"images/cartas/vermelha/CANCEL.png"));
+//        players[2].getCardsOnHand().add(new Card(CardType.CANCEL, CardColor.RED,"images/cartas/vermelha/CANCEL.png"));
+//
+//        players[3].getCardsOnHand().add(new Card(CardType.CANCEL, CardColor.RED,"images/cartas/vermelha/CANCEL.png"));
+//        players[3].getCardsOnHand().add(new Card(CardType.CANCEL, CardColor.RED,"images/cartas/vermelha/CANCEL.png"));
     }
 
     /**
@@ -305,17 +319,28 @@ public class GameModel implements GamePanelEventsInterface {
 
     @Override
     public void machineCulp() {
-        //JOGADA DE IA
-        executeCulp(0);
-        gameEvents.culpExecuted();
+        try {
+            //JOGADA DE IA
+            executeCulp(0);
+            gameEvents.culpExecuted();
+        } catch (GameException ex) {
+            System.out.println(ex.getMessage());
+            changePlayer();
+            gameEvents.culpExecuted();
+        }
 
     }
 
     @Override
     public void userCulp(int cardIndex) {
-        //JOGADA DE USUARIO
-        executeCulp(cardIndex);
-        gameEvents.culpExecuted();
+        try {
+            //JOGADA DE USUARIO
+            executeCulp(cardIndex);
+            gameEvents.disableUserLoggedComponents();
+            gameEvents.culpExecuted();
+        } catch (GameException ex) {
+            gameEvents.showCulpRefused();
+        }
 
     }
 
@@ -327,25 +352,25 @@ public class GameModel implements GamePanelEventsInterface {
             switch (getHeadStackPlayed().getCardType()) {
                 case CANCEL:
                     gameEvents.refreshPlayerCards(getActualPlayerPosition());
-                    changePlayer();
+
                     actualGame.setTableEfected(false);
                     System.out.println("Player :" + getActualPlayer().getUser().getName() + " recebeu uma punição de " + getHeadStackPlayed().getCardType().toString());
-                    throw new GameException(CardType.CANCEL);
+                    throw new GameException(GamePunition.CANCEl);
                 case PLUS_TWO:
                     plusCardToActualPlayer(2);
                     gameEvents.refreshPlayerCards(getActualPlayerPosition());
-                    changePlayer();
+
                     actualGame.setTableEfected(false);
                     System.out.println("Player :" + getActualPlayer().getUser().getName() + " recebeu uma punição de " + getHeadStackPlayed().getCardType().toString());
-                    throw new GameException(CardType.PLUS_TWO);
+                    throw new GameException(GamePunition.PLUS_TWO);
 
                 case PLUS_FOUR:
                     plusCardToActualPlayer(4);
                     gameEvents.refreshPlayerCards(getActualPlayerPosition());
-                    changePlayer();
+
                     actualGame.setTableEfected(false);
                     System.out.println("Player :" + getActualPlayer().getUser().getName() + " recebeu uma punição de " + getHeadStackPlayed().getCardType().toString());
-                    throw new GameException(CardType.PLUS_FOUR);
+                    throw new GameException(GamePunition.PLUS_FOUR);
             }
             System.out.println("Fim do fluxo de punição");
 
@@ -353,39 +378,39 @@ public class GameModel implements GamePanelEventsInterface {
 
     }
 
-    private void executeCulp(int cardIndex) {
+    private void executeCulp(int cardIndex) throws GameException {
         System.out.println("Jogada de :" + getActualPlayer().getUser().getName());
         Card cardToPlay = getActualPlayer().getCardsOnHand().get(cardIndex);
-        Card headCard = getHeadStackPlayed();
+        Card tableCard = getHeadStackPlayed();
         boolean doCulp = false;
         //Permissoes de jogadas
-        if (headCard != null) {
+        if (tableCard != null) {
             System.out.println("Cor atual do jogo: " + actualGame.getGameActualColor().toString());
-            if (((isNormalCard(cardToPlay.getCardType()) && isNormalCard(headCard.getCardType()))
-                    || ((isNormalCard(cardToPlay.getCardType())) && (isEfectCard(headCard.getCardType()))))
-                    || ((isNormalCard(headCard.getCardType())) && (isEfectCard(cardToPlay.getCardType())))
-                    || ((isNormalCard(cardToPlay.getCardType())) && (isJokerCard(headCard.getCardType())))) {
+            if (((isNormalCard(cardToPlay.getCardType()) && isNormalCard(tableCard.getCardType()))
+                    || ((isNormalCard(cardToPlay.getCardType())) && (isEfectCard(tableCard.getCardType()))))
+                    || ((isNormalCard(tableCard.getCardType())) && (isEfectCard(cardToPlay.getCardType())))
+                    || ((isNormalCard(cardToPlay.getCardType())) && (isJokerCard(tableCard.getCardType())))) {
                 //Testa a cor ou  numero
                 if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))
-                        || (cardToPlay.getCardType().getValue() == headCard.getCardType().getValue())) {
+                        || (cardToPlay.getCardType().getValue() == tableCard.getCardType().getValue())) {
                     //Faça a jogada
                     doCulp = true;
                 }
-            } else if ((isEfectCard(cardToPlay.getCardType()) && isEfectCard(headCard.getCardType()))) {
+            } else if ((isEfectCard(cardToPlay.getCardType()) && isEfectCard(tableCard.getCardType()))) {
                 if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))
-                        || (cardToPlay.getCardType().getValue() == headCard.getCardType().getValue())) {
-                    if ((!cardToPlay.getCardType().equals(CardType.PLUS_TWO) && !headCard.getCardType().equals(CardType.PLUS_TWO) || !actualGame.isTableEfected())) {
+                        || (cardToPlay.getCardType().equals(tableCard.getCardType()))) {
+                    if ((!cardToPlay.getCardType().equals(CardType.PLUS_TWO) && !tableCard.getCardType().equals(CardType.PLUS_TWO) || !actualGame.isTableEfected())) {
                         //Faça a jogada
                         doCulp = true;
                     }
                 }
-            } else if ((isEfectCard(cardToPlay.getCardType()) && isJokerCard(headCard.getCardType()))) {
+            } else if ((isEfectCard(cardToPlay.getCardType()) && isJokerCard(tableCard.getCardType()))) {
                 if ((cardToPlay.getCardColor().equals(actualGame.getGameActualColor()))) {
                     //Faça a jogada
                     doCulp = true;
                 }
-            } else if ((isEfectCard(headCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))
-                    || (isNormalCard(headCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))) {
+            } else if ((isEfectCard(tableCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))
+                    || (isNormalCard(tableCard.getCardType()) && isJokerCard(cardToPlay.getCardType()))) {
                 doCulp = true;
             }
         } else {
@@ -395,46 +420,28 @@ public class GameModel implements GamePanelEventsInterface {
             if (isPunitionCard(cardToPlay.getCardType())) {
                 actualGame.setTableEfected(true);
             }
-            if(cardToPlay.getCardType().equals(CardType.REVERSES)){
-                gameEvents.showAnimationToPunition(CardType.REVERSES);
-                if(actualGame.getGameSense().equals(Sense.RIGTH)){
+            if (cardToPlay.getCardType().equals(CardType.REVERSES)) {
+                gameEvents.showAnimationToPunition(null, GamePunition.REVERSES);
+                if (actualGame.getGameSense().equals(Sense.RIGTH)) {
                     actualGame.setGameSense(Sense.LEFT);
-                }else{
+                } else {
                     actualGame.setGameSense(Sense.RIGTH);
                 }
             }
             getActualStakCardPlayed().push(cardToPlay);
             if (isNormalCard(cardToPlay.getCardType()) || isEfectCard(cardToPlay.getCardType())) {
-                actualGame.setGameActualColor(cardToPlay.getCardColor());
+                switchGameColor(cardToPlay.getCardColor());
+                doCulp(cardIndex);
             } else {
-                actualGame.setGameActualColor(CardColor.BLUE);
+                //Solicitar nova cor do jogo
+                //indexCardAux = cardIndex;
+                switchGameColor(CardColor.BLUE);
+                doCulp(cardIndex);
+                //requestNewGameColor();
             }
-            getActualPlayer().getCardsOnHand().remove(cardIndex);
-            //Aqui verifica se tem apenas uma carta na mão e ativa o botao uno
 
-            if (getActualPlayer().getCardsOnHand().isEmpty()) {
-                //Jogador nao possui cartas na mao
-                //Contar pontuação de cada jogador restante
-                int sum = 0;
-                for (int i = 0; i < actualGame.getPlayers().length; i++) {
-                    if (i != getActualPlayerPosition()) {
-                        for (Card card : actualGame.getPlayers()[i].getCardsOnHand()) {
-                            sum += card.getCardType().getValue();
-                        }
-                    }
-                }
-                updateGameStatus(GameStatus.FINALIZED);
-                gameEvents.refreshPlayerCards(getActualPlayerPosition());
-                gameEvents.finalizeGame(sum);
-            } else {
-                gameEvents.refreshPlayerCards(getActualPlayerPosition());
-                changePlayer();
-            }
         } else {
-            if (getActualPlayerPosition() == 0) {//Apenas para o jogador logado
-                gameEvents.showCulpRefused();
-            }
-            changePlayer();
+            throw new GameException("Jogada recusada");
         }
     }
 
@@ -600,8 +607,8 @@ public class GameModel implements GamePanelEventsInterface {
                 gameEvents.requestMachinePlayerCulp(actualGame.getActualPlayerPosition());
             }
         } catch (GameException ex) {
-            System.out.println("Punição na mesa");
-            gameEvents.showAnimationToPunition(ex.getPunitionType());
+            gameEvents.showAnimationToPunition(getActualPlayer(), ex.getPunitionType());
+            changePlayer();
             gameEvents.culpExecuted();
         }
     }
@@ -647,6 +654,62 @@ public class GameModel implements GamePanelEventsInterface {
 
     public void updateGameSide(Sense sense) {
         actualGame.setGameSense(sense);
+    }
+
+    private void switchGameColor(CardColor cardColor) {
+        actualGame.setGameActualColor(cardColor);
+        gameEvents.switchActualGameColor(cardColor);
+    }
+
+    @Override
+    public void skipCulp() {
+        plusCardToActualPlayer(1);
+        gameEvents.refreshPlayerCards(getActualPlayerPosition());
+        if (getActualPlayerPosition() == 0) {
+            gameEvents.disableUserLoggedComponents();
+        }
+        gameEvents.showAnimationToPunition(getActualPlayer(), GamePunition.PLUS_ONE);
+        changePlayer();
+        gameEvents.culpExecuted();
+    }
+
+    @Override
+    public void onUserSelectedNewColor(CardColor c) {
+        switchGameColor(c);
+        doCulp(indexCardAux);
+        indexCardAux = -1;
+    }
+
+    private void requestNewGameColor() {
+        if (getActualPlayer().getMyType().equals(Player.PlayerType.HUMAN)) {
+            gameEvents.requestLoggedPlayerNewGameColor();
+        } else {
+            switchGameColor(CardColor.BLUE);
+        }
+    }
+
+    private void doCulp(int cardIndex) {
+        getActualPlayer().getCardsOnHand().remove(cardIndex);
+        //Aqui verifica se tem apenas uma carta na mão e ativa o botao uno
+
+        if (getActualPlayer().getCardsOnHand().isEmpty()) {
+            //Jogador nao possui cartas na mao
+            //Contar pontuação de cada jogador restante
+            int sum = 0;
+            for (int i = 0; i < actualGame.getPlayers().length; i++) {
+                if (i != getActualPlayerPosition()) {
+                    for (Card card : actualGame.getPlayers()[i].getCardsOnHand()) {
+                        sum += card.getCardType().getValue();
+                    }
+                }
+            }
+            updateGameStatus(GameStatus.FINALIZED);
+            gameEvents.refreshPlayerCards(getActualPlayerPosition());
+            gameEvents.finalizeGame(sum);
+        } else {
+            gameEvents.refreshPlayerCards(getActualPlayerPosition());
+            changePlayer();
+        }
     }
 
 }
