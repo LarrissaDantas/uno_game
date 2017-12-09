@@ -23,7 +23,7 @@ public class LoadPanel extends javax.swing.JPanel {
         initComponents();
         
         //@Teste
-        lbBack.setVisible(false);
+        //lbBack.setVisible(false);
         
         progressBar.setMaximum(AppTaskManager.TASK_MAX_VALUE);
         new Thread(new Runnable() {
