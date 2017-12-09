@@ -5,7 +5,6 @@
  */
 package view.menu;
 
-
 import kernel.task.GameTask;
 import model.game.GameMode;
 import model.user.UserModel;
@@ -21,14 +20,14 @@ import view.login.LoginPanelController;
 import view.notification.NotificationType;
 import view.tutorial.TutorialPanelController;
 
-
 /**
  *
  * @author sergi
  */
-public class MenuPanelController implements ViewController{
+public class MenuPanelController implements ViewController {
+
     private MenuPanel myView;
-    
+
     @Override
     public void startView() {
         myView = new MenuPanel(this);
@@ -37,35 +36,34 @@ public class MenuPanelController implements ViewController{
         String login = UserModel.USER_LOGGED.getLogin();
         String name = UserModel.USER_LOGGED.getName();
         String srcUser = UserModel.USER_LOGGED.getSrcProfile();
-        
+
         myView.setUserInfos(login, name, srcUser);
         //Caso o usuario logado esteja usando o sistema pela primeira vez
-        if(UserModel.USER_LOGGED.getFirstContact()==AppUtil.USER_FIRST_CONTACT_VALUE){
+        if (UserModel.USER_LOGGED.getFirstContact() == AppUtil.USER_FIRST_CONTACT_VALUE) {
             new TutorialPanelController().startView();
         }
         //@Teste
         //onBtnStartClicked();
     }
-  
-    
-    
+
     /**
      * Logout do jogo
      */
     public void logout() {
-        if(myView.showConfirmDialog("Deseja realizar logout?","Logout")){
+        if (myView.showConfirmDialog("Deseja realizar logout?", "Logout")) {
         } else {
             new LoginPanelController().startView();
             UserModel.USER_LOGGED = null;
         }
-    }    
-    public void showAbout(){
+    }
+
+    public void showAbout() {
         new AboutPanelController().startView();
     }
 
     @Override
     public void returnPage() {
-        
+
     }
 
     public void showTutorial() {
@@ -73,11 +71,11 @@ public class MenuPanelController implements ViewController{
     }
 
     void onBtnContinueClicked() {
-        MainFrameController.shootNotification(NotificationType.INFO, "Você ainda não possui jogo salvo, tente iniciar um novo.",NotificationTime.MEDIUM);
+        MainFrameController.shootNotification(NotificationType.SUCCESS, "Você ainda não possui jogo salvo, tente iniciar um novo.", NotificationTime.MEDIUM);
     }
 
     void onBtnRankingClicked() {
-        MainFrameController.shootNotification(NotificationType.WARNING, "O ranking está indisponível.",NotificationTime.SHORT);
+        MainFrameController.shootNotification(NotificationType.WARNING, "O ranking está indisponível.", NotificationTime.SHORT);
     }
 
     public void onBtnStartClicked() {

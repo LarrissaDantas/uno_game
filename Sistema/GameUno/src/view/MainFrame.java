@@ -88,7 +88,7 @@ public class MainFrame extends javax.swing.JFrame {
             NotificationManagerInterface actualView = (NotificationManagerInterface)this.getContentPane();
             actualView.notify(notificationType,message,time);
         }catch(Exception ex){
-            
+            System.out.println(this.getContentPane()+ " não possui suporte para notificações.");
         }
         }
 
