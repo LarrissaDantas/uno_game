@@ -8,6 +8,7 @@ package model.game;
 import exception.GameException;
 import view.game.GamePanelEventsInterface;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Stack;
@@ -573,7 +574,7 @@ public class GameModel implements GamePanelEventsInterface {
             for (int i = 0; i < quant; i++) {
                 getActualPlayer().getCardsOnHand().add(getActualStakCard().pop());
             }
-        } catch (Exception e) {
+        } catch (EmptyStackException e) {
             System.out.println("Pilha de cartas está vazia");
             AppLog.error("Pilha de cartas está vazia");
         }
@@ -666,13 +667,7 @@ public class GameModel implements GamePanelEventsInterface {
         indexCardAux = -1;
     }
 
-    private void requestNewGameColor() {
-        if (getActualPlayer().getMyType().equals(Player.PlayerType.HUMAN)) {
-            gameEvents.requestLoggedPlayerNewGameColor();
-        } else {
-            switchGameColor(CardColor.BLUE);
-        }
-    }
+
 
     private void doCulp(int cardIndex) {
         getActualPlayer().getCardsOnHand().remove(cardIndex);
