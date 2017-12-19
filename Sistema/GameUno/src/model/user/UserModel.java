@@ -9,9 +9,6 @@ import data.dao.UserDAO;
 import exception.DaoException;
 import exception.ModelException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.game.GameModel;
 import util.AppLog;
 
 /**
@@ -20,7 +17,7 @@ import util.AppLog;
  */
 public class UserModel {
     public static User USER_LOGGED;
-    private UserDAO myDAO;
+    private final UserDAO myDAO;
     public UserModel(){
         this.myDAO = new UserDAO();
     }

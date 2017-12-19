@@ -26,8 +26,6 @@ public class LoginPanelController implements ViewController{
     public LoginPanelController(){
         myView  = new LoginPanel(this);
         
-        //Linha para testes
-        //onBtnLoginClicked("teste", "123");
     }
     /**
      * Responder ao botao de login
@@ -47,7 +45,6 @@ public class LoginPanelController implements ViewController{
         } catch (ModelException ex) {
                 myView.showAlertDialog(ex.getMessage());
         }
-        
     }
     
     /**

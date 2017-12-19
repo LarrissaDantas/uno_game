@@ -21,6 +21,10 @@ public class LoadPanel extends javax.swing.JPanel {
      */
     public LoadPanel(LoadInterface loadInterface) {
         initComponents();
+        
+        //@Teste
+        //lbBack.setVisible(false);
+        
         progressBar.setMaximum(AppTaskManager.TASK_MAX_VALUE);
         new Thread(new Runnable() {
             @Override
@@ -31,7 +35,11 @@ public class LoadPanel extends javax.swing.JPanel {
                             txtStatus.setText(AppTaskManager.TASK_STATUS);
                         }else{
                             onLoadComplete();
-                            loadInterface.onLoadComplete();
+                                loadInterface.onLoadComplete();
+                            try{
+                            }catch(Exception e){
+                                System.out.println("LoadInterface não atribuida.");
+                            }
                             return;
                         }
                 }
@@ -54,7 +62,7 @@ public class LoadPanel extends javax.swing.JPanel {
 
         txtStatus = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+        lbBack = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(204, 255, 255));
         setAlignmentX(0.0F);
@@ -69,8 +77,8 @@ public class LoadPanel extends javax.swing.JPanel {
         progressBar.setMaximum(10);
         progressBar.setAlignmentX(0.0F);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Logo_Uno_600x500.png"))); // NOI18N
+        lbBack.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbBack.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Logo_Uno_600x500.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -83,7 +91,7 @@ public class LoadPanel extends javax.swing.JPanel {
                         .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(lbBack, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(txtStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -93,10 +101,10 @@ public class LoadPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbBack)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtStatus)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -104,7 +112,7 @@ public class LoadPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lbBack;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JLabel txtStatus;
     // End of variables declaration//GEN-END:variables

@@ -20,7 +20,10 @@ import view.notification.NotificationType;
  */
 public class MainFrameController {
     private static MainFrame mainFrame;
-
+    
+    public static MainFrame getMainFrame(){
+        return mainFrame;
+    }
     public static void shootNotification(NotificationType notificationType,String message,NotificationTime time) {
         mainFrame.shootNotification(notificationType,message,time);
     }
@@ -30,18 +33,13 @@ public class MainFrameController {
     }
 
     public static void exitApp() {
-        System.out.println("Saiu");
         System.exit(0);
-    }
-
- 
-    public MainFrameController(){
-        mainFrame = new MainFrame();
     }
     /**
      * Metodo para startar a view incial da aplicação
      */
     public static void startView(){
+        mainFrame = new MainFrame();
         mainFrame.setVisible(true);
         //Start Task
         new Thread(() -> {
@@ -52,8 +50,7 @@ public class MainFrameController {
             @Override
             public void onLoadComplete() {
                 new Thread(() -> {
-                    //Linha para testes
-                        //new TestTask().executeTasks();
+                    //new TestTask().executeTasks();
                 }).start();
                 MainFrameController.setView(new LoadPanel(new LoadInterface() {
                     @Override
@@ -76,4 +73,12 @@ public class MainFrameController {
         mainFrame.setContentPane(view);
         mainFrame.revalidate();
     }
+
+    public static void startNoContentFrame(){
+         if(mainFrame==null){
+             mainFrame = new MainFrame();
+         }
+         mainFrame.setVisible(true);
+    }
+
 }

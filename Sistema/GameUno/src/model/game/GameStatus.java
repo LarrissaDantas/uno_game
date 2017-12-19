@@ -10,5 +10,5 @@ package model.game;
  * @author sergi
  */
 public enum GameStatus {
-    
+    CREATED, STARTED, RUNNING, FINALIZED;
 }
