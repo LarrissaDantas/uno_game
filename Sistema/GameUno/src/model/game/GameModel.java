@@ -633,10 +633,21 @@ public class GameModel implements GamePanelEventsInterface {
     public int[] getGameCurrentTime() {
         return actualGame.getGameTime();
     }
-
+    public Game getActualGame(){
+        return actualGame;
+    }
+    
+    /***
+     * Metodo para dropar 1 carta para o usuario i
+     * @param i Posicao do jogador na mesa
+     */
     public void popStackCardForUser(int i) {
-        getGamePlayers()[i].getCardsOnHand().add(getActualStakCard().pop());
-        gameEvents.refreshPlayerCards(getActualPlayerPosition());
+        try {
+            getGamePlayers()[i].getCardsOnHand().add(getActualStakCard().pop());
+            gameEvents.refreshPlayerCards(getActualPlayerPosition());
+        } catch (NullPointerException e) {
+            System.out.println("Interface Null");
+        }
     }
 
     public void updateGameSide(Sense sense) {
@@ -666,8 +677,6 @@ public class GameModel implements GamePanelEventsInterface {
         doCulp(indexCardAux);
         indexCardAux = -1;
     }
-
-
 
     private void doCulp(int cardIndex) {
         getActualPlayer().getCardsOnHand().remove(cardIndex);
